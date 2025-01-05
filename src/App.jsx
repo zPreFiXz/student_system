@@ -5,7 +5,7 @@ import Profile from "./components/Profile";
 
 export default function App() {
   return (
-    <div className="bg-[#d9d9d9] font-kanit">
+    <div className="font-kanit">
       <BrowserRouter>
         <Routes>
           <Route>

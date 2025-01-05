@@ -3,10 +3,13 @@ import edit_user from "../assets/edit_user.png";
 
 export default function EditProfile() {
   return (
-    <div>
+    <div className="bg-[#d9d9d9]">
       <Navbar />
-      <div className="flex">
-        <div className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] rounded-[20px] border border-[#e9e9e9] bg-white ">
+      <div className="flex ">
+        <div
+          className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] rounded-[20px] bg-white"
+          style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
+        >
           <div className="flex flex-col items-center w-full">
             <div className="flex items-center w-full h-[42px] px-[33px] py-[7px] rounded-tl-[20px] rounded-tr-[20px] bg-[#a01f1f]">
               <svg
@@ -200,7 +203,7 @@ export default function EditProfile() {
               </div>
               <div className="mx-auto md:w-[90%]">
                 <div className="mt-[13px] font-semibold text-base">
-                  ความสัมพันธ์กับผู้ติดต่อฉุกเฉิน
+                  ความสัมพันธ์กับนักศึกษา
                 </div>
                 <input
                   type="text"
@@ -210,9 +213,6 @@ export default function EditProfile() {
               <div className="mx-auto md:w-[90%]">
                 <div className="mt-[13px] font-semibold text-base">
                   สิ่งที่แพ้
-                </div>
-                <div className="hidden md:block lg:hidden">
-                  <br />
                 </div>
                 <input
                   type="text"
