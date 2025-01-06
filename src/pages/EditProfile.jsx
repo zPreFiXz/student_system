@@ -1,4 +1,4 @@
-import Navbar from "./Navbar";
+import Navbar from "../layouts/Navbar";
 import edit_user from "../assets/edit_user.png";
 
 export default function EditProfile() {
