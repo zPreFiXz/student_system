@@ -15,7 +15,7 @@ export default function Profile() {
                 viewBox="0 0 30 30"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="w-[30px] h-[30px] relative"
+                className="w-[30px] h-[30px]"
                 preserveAspectRatio="xMidYMid meet"
               >
                 <path
@@ -23,7 +23,7 @@ export default function Profile() {
                   fill="white"
                 />
               </svg>
-              <p className="ml-[5px] font-semibold text-xl text-white">
+              <p className="ml-[5px] text-white font-semibold text-xl">
                 ข้อมูลนักศึกษา
               </p>
             </div>
@@ -31,80 +31,80 @@ export default function Profile() {
               <img src={edit_user} />
             </div>
             <div className="flex space-x-[-39px]">
-              <p className="text-[24px] md:text-[28px] mt-[15px] font-bold text-[#9e1f1f]">
+              <p className="mt-[15px] text-[#9e1f1f] text-[24px] md:text-[28px] font-bold">
                 นางสาวลลิษา มโนบาล
               </p>
             </div>
-            <div className="md:grid grid-cols-2 mx-auto mt-[36px] lg:gap-x-[200px] md:gap-y-[15px]">
-              <div className="md:mt-0 text-base font-semibold text-gray-800">
+            <div className="md:grid md:grid-cols-2 md:gap-y-[15px] lg:gap-x-[200px] mx-auto mt-[36px]">
+              <div className="md:mt-0 text-gray-800 text-base font-semibold">
                 รหัสนักศึกษา
               </div>
-              <div className="font-medium text-base text-gray-600">
+              <div className="text-gray-600 font-medium text-base">
                 6510014101
               </div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
                 ชื่อ-นามสกุล
               </div>
-              <div className="font-medium text-base text-gray-600">
+              <div className="text-gray-600 font-medium text-base">
                 นางสาวลลิษา มโนบาล
               </div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
                 ชื่อเล่น
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className=" text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 วัน/เดือน/ปีเกิด
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">รุ่น</div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">รุ่น</div>
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 Github
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">สถานะ</div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">สถานะ</div>
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 โรงเรียนเดิม
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 เบอร์โทรศัพท์
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">Email</div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">Email</div>
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 Facebook
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 เบอร์ติดต่อฉุกเฉิน
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 ความสัมพันธ์กับนักศึกษา
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 สิ่งที่แพ้
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 สิทธิการรักษาพยาบาล
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
                 โรงพยาบาลที่ใช้สิทธิการรักษา
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
-              <div className="mt-[13px] md:mt-0 text-base font-semibold text-gray-800">
+              <div className="text-gray-600 font-medium text-base"></div>
+              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
                 ข้อมูลการเกณฑ์ทหาร
               </div>
-              <div className="font-medium text-base text-gray-600"></div>
+              <div className="text-gray-600 font-medium text-base"></div>
             </div>
             <div className="mt-[36px] mb-[56.96px]">
-              <button className="btn btn-warning w-full gap-[5px] p-2.5 rounded-full">
+              <button className="btn btn-warning gap-[5px] w-full p-2.5 rounded-full">
                 <svg
                   width={24}
                   height={25}
@@ -129,7 +129,7 @@ export default function Profile() {
                     stroke-linejoin="round"
                   />
                 </svg>
-                <p className="font-semibold text-xl text-white">แก้ไขข้อมูล</p>
+                <p className="text-white font-semibold text-xl">แก้ไขข้อมูล</p>
               </button>
             </div>
           </div>
