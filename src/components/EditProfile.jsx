@@ -111,7 +111,7 @@ export default function EditProfile() {
               </div>
               <div className="mx-auto md:w-[90%]">
                 <div className="mt-[13px] font-semibold text-base">
-                  วันเดือนปีเกิด
+                  วัน/เดือน/ปีเกิด
                 </div>
                 <input
                   type="text"
@@ -177,7 +177,7 @@ export default function EditProfile() {
                 />
               </div>
               <div className="mx-auto md:w-[90%]">
-                <div className="mt-[13px] font-semibold text-base">Emial</div>
+                <div className="mt-[13px] font-semibold text-base">Email</div>
                 <input
                   type="text"
                   className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
@@ -194,7 +194,7 @@ export default function EditProfile() {
               </div>
               <div className="mx-auto md:w-[90%]">
                 <div className="mt-[13px] font-semibold text-base">
-                  เบอร์ติดต่อฉุกเดฉิน
+                  เบอร์ติดต่อฉุกเฉิน
                 </div>
                 <input
                   type="text"
