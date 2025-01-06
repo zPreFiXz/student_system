@@ -4,10 +4,10 @@ import user from "../assets/user.png";
 export default function Navbar() {
   return (
     <div className="mb-[48px]">
-      <div className="flex items-center justify-between px-[20px] md:px-[39px] h-[65px] bg-[#a01f1f]">
+      <div className="flex items-center justify-between h-[65px] px-[20px] md:px-[39px] bg-[#a01f1f]">
         <a href="/" className="flex items-center gap-2">
           <img className="w-14 h-[54px] rounded-[20px]" src={se_logo} />
-          <div className="hidden md:block font-semibold text-2xl text-[#fba01d]">
+          <div className="hidden md:block text-[#fba01d] font-semibold text-2xl">
             ระบบฐานข้อมูลนักศึกษาสาขาวิชา
           </div>
         </a>
@@ -19,7 +19,7 @@ export default function Navbar() {
               role="button"
               className="btn p-1 bg-transparent hover:bg-[#8b1b1b] hover:bg-transparent border-none"
             >
-              <p className="hidden md:block font-medium text-xl text-white">
+              <p className="hidden md:block text-white font-medium text-xl">
                 ลลิษา มโนบาล
               </p>
               <svg
@@ -39,7 +39,7 @@ export default function Navbar() {
             </div>
             <ul
               tabIndex={0}
-              className="dropdown-content menu bg-base-100 rounded-box z-[1] w-52 p-2 shadow"
+              className="dropdown-content menu w-52 p-2 z-[1] rounded-box bg-base-100 shadow"
             >
               <li>
                 <a>ข้อมูลนักศึกษา</a>

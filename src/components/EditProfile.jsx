@@ -5,7 +5,7 @@ export default function EditProfile() {
   return (
     <div className="bg-[#d9d9d9]">
       <Navbar />
-      <div className="flex ">
+      <div className="flex">
         <div
           className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] rounded-[20px] bg-white"
           style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
@@ -30,7 +30,7 @@ export default function EditProfile() {
                   fill="white"
                 />
               </svg>
-              <p className="ml-[5px] font-semibold text-xl text-white">
+              <p className="ml-[5px] text-white font-semibold text-xl">
                 แก้ไขข้อมูลนักศึกษา
               </p>
             </div>
@@ -58,83 +58,83 @@ export default function EditProfile() {
               </div>
             </div>
             <div className="md:grid grid-cols-2 md:w-[70%] mx-auto mt-[36px]">
-              <div className="mx-auto md:w-[90%]">
-                <div className="text-base font-semibold">รหัสนักศึกษา</div>
+              <div className="md:w-[90%] mx-auto">
+                <div className="font-semibold text-base">รหัสนักศึกษา</div>
                 <input
                   type="text"
                   placeholder="6510014101"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px] disabled:placeholder:text-[#909090]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] md:mt-0 font-semibold text-base">
                   คำนำหน้าชื่อ
                 </div>
                 <input
                   type="text"
                   placeholder="นางสาว"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px] disabled:placeholder:text-[#909090]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   ชื่อ (ภาษาไทย)
                 </div>
                 <input
                   type="text"
                   placeholder="ลลิษา"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px] disabled:placeholder:text-[#909090]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   นามสกุล (ภาษาไทย)
                 </div>
                 <input
                   type="text"
                   placeholder="มโนบาล"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px] disabled:placeholder:text-[#909090]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   ชื่อเล่น
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   วันเดือนปีเกิด
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">รุ่น</div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">Github</div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
-                <div className="mt-[13px] font-semibold text-base ">สถานะ</div>
-                <select className="select select-bordered select-sm rounded-full w-full h-[33px] mt-[11px]">
+              <div className="md:w-[90%] mx-auto">
+                <div className="mt-[13px] font-semibold text-base">สถานะ</div>
+                <select className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full">
                   <option disabled selected>
                     กรุณาเลือก
                   </option>
@@ -142,88 +142,88 @@ export default function EditProfile() {
                   <option>Greedo</option>
                 </select>
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   โรงเรียนเดิม
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
-                <div className="mt-[13px] font-semibold text-base ">
+              <div className="md:w-[90%] mx-auto ">
+                <div className="mt-[13px] font-semibold text-base">
                   เกรดเฉลี่ยที่จบ
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">ที่อยู่</div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   เบอร์โทรศัพท์
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">Emial</div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   Facebook
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   เบอร์ติดต่อฉุกเดฉิน
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   ความสัมพันธ์กับนักศึกษา
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   สิ่งที่แพ้
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   สิทธิการรักษาพยาบาล
                 </div>
-                <select className="select select-bordered select-sm rounded-full w-full h-[33px] mt-[11px]">
+                <select className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full">
                   <option disabled selected>
                     กรุณาเลือก
                   </option>
@@ -231,20 +231,20 @@ export default function EditProfile() {
                   <option>Greedo</option>
                 </select>
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   โรงพยาบาลที่ใช้สิทธิการรักษา
                 </div>
                 <input
                   type="text"
-                  className="input input-bordered rounded-full w-full h-[33px] mt-[11px]"
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
-              <div className="mx-auto md:w-[90%]">
+              <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">
                   ข้อมูลการเกณฑ์ทหาร
                 </div>
-                <select className="select select-bordered select-sm rounded-full w-full h-[33px] mt-[11px]">
+                <select className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full">
                   <option disabled selected>
                     กรุณาเลือก
                   </option>
@@ -253,15 +253,15 @@ export default function EditProfile() {
                 </select>
               </div>
             </div>
-            <div className="flex mt-[45px] mb-[67.96px] gap-2 md:gap-9">
-              <button className="btn btn-success w-[109px] gap-[5px] p-2.5 rounded-full">
+            <div className="flex gap-2 md:gap-9 mt-[45px] mb-[67.96px]">
+              <button className="btn btn-success gap-[5px] w-[109px] p-2.5 rounded-full">
                 <svg
                   width={25}
                   height={25}
                   viewBox="0 0 25 25"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                  className="w-6 h-6"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   <path
@@ -271,16 +271,16 @@ export default function EditProfile() {
                     fill="white"
                   />
                 </svg>
-                <p className="font-semibold text-xl text-white">บันทึก</p>
+                <p className="text-white font-semibold text-xl">บันทึก</p>
               </button>
-              <button className="btn btn-error w-[109px] gap-[5px] p-2.5 rounded-full">
+              <button className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full">
                 <svg
                   width={25}
                   height={25}
                   viewBox="0 0 25 25"
                   fill="none"
                   xmlns="http://www.w3.org/2000/svg"
-                  className="flex-grow-0 flex-shrink-0 w-6 h-6 relative"
+                  className="w-6 h-6"
                   preserveAspectRatio="xMidYMid meet"
                 >
                   <path
@@ -288,7 +288,7 @@ export default function EditProfile() {
                     fill="white"
                   />
                 </svg>
-                <p className="font-semibold text-xl text-white">ยกเลิก</p>
+                <p className="text-white font-semibold text-xl">ยกเลิก</p>
               </button>
             </div>
           </div>
