@@ -25,13 +25,13 @@ export default function Dashboard() {
                   fill="white"
                 />
               </svg>
-              <p className="ml-[5px] font-semibold text-xl text-white">
+              <p className="ml-[5px] text-white font-semibold text-xl">
                 รายชื่อนักศึกษาทั้งหมด
               </p>
             </div>
-            <div className="flex items-center w-full gap-[7px] mt-[31px] px-[30px] md:px-[69px]">
+            <div className="flex items-center gap-[7px] w-full mt-[31px] px-[30px] md:px-[69px]">
               <p>ปีการศึกษา</p>
-              <select className="select select-bordered select-sm w-auto rounded-full h-[33px]">
+              <select className="select select-bordered select-sm w-auto h-[33px] rounded-full">
                 <option selected>2567</option>
                 <option>2568</option>
                 <option>2569</option>
@@ -41,17 +41,17 @@ export default function Dashboard() {
               <div className="md:flex">
                 <div className="flex items-center">
                   <p>แสดง</p>
-                  <select className="select select-bordered select-sm rounded-full w-auto h-[33px] mx-[12px]">
+                  <select className="select select-bordered select-sm w-auto h-[33px] mx-[12px] rounded-full">
                     <option selected>10</option>
                     <option>20</option>
                     <option>30</option>
                   </select>
                   <p>รายการ</p>
                 </div>
-                <div className="relative mt-[36px] md:mt-0 md:ml-[16px] md:w-1/2 lg:2/3">
+                <div className="relative md:w-1/2 mt-[36px] md:mt-0 md:ml-[16px]">
                   <input
                     type="text"
-                    className="input input-bordered rounded-full h-[33px] pl-[36px] w-full"
+                    className="input input-bordered w-full h-[33px] pl-[36px] rounded-full"
                     placeholder="ค้นหา..."
                   />
                   <svg
@@ -76,7 +76,7 @@ export default function Dashboard() {
                   filter: "drop-shadow(5px 5px 100px rgba(0,0,0,0.25))",
                 }}
               >
-                <table className="table-fixed xl:w-full mt-[36px] rounded-[20px] border-separate border-spacing-0 overflow-hidden bg-[#d9d9d9]">
+                <table className="table-fixed overflow-hidden xl:w-full mt-[36px] border-separate border-spacing-0 rounded-[20px] bg-[#d9d9d9]">
                   <thead className="bg-[#d9d9d9]">
                     <tr>
                       <th className="whitespace-nowrap px-4 py-2 text-left">
@@ -105,29 +105,29 @@ export default function Dashboard() {
                   </thead>
                   <tbody className="bg-white/[0.87]">
                     <tr>
-                      <td className="font-light whitespace-nowrap px-4 py-2">
+                      <td className="px-4 py-2 font-light whitespace-nowrap">
                         6510014101
                       </td>
-                      <td className="font-light whitespace-nowrap px-4 py-2">
+                      <td className="px-4 py-2font-light whitespace-nowrap ">
                         ลลิษา
                       </td>
-                      <td className="font-light whitespace-nowrap px-4 py-2">
+                      <td className="px-4 py-2 font-light whitespace-nowrap">
                         มโนบาล
                       </td>
-                      <td className="font-light whitespace-nowrap px-4 py-2">
+                      <td className="px-4 py-2 font-light whitespace-nowrap">
                         ลิซ่า
                       </td>
-                      <td className="font-light whitespace-nowrap px-4 py-2">
+                      <td className="px-4 py-2 font-light whitespace-nowrap">
                         1/01/2001
                       </td>
-                      <td className="font-light whitespace-nowrap px-4 py-2">
+                      <td className="px-4 py-2 font-light whitespace-nowrap">
                         0987654321
                       </td>
-                      <td className="font-light break-words px-4 py-2">
+                      <td className="px-4 py-2 font-light break-words">
                         stu6510014101@sskru.ac.th
                       </td>
                       <td className="px-4 py-2">
-                        <button className="flex items-center justify-center mx-auto gap-[4px] w-[89px] h-[35px] rounded-lg bg-[#9f2020]">
+                        <button className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]">
                           <svg
                             width={18}
                             height={16}
@@ -143,7 +143,7 @@ export default function Dashboard() {
                               />
                             </g>
                           </svg>
-                          <p className="font-bold text-white">ดูข้อมูล</p>
+                          <p className="text-white font-bold">ดูข้อมูล</p>
                         </button>
                       </td>
                     </tr>
@@ -152,23 +152,23 @@ export default function Dashboard() {
               </div>
             </div>
             <div className="flex items-center justify-center gap-[12px] mt-[36px] mb-[67.96px]">
-              <p className="text-base text-[#9e9e9e]">Previous</p>
+              <p className="text-[#9e9e9e] text-base">Previous</p>
               <div className="px-[9px] py-2 rounded-lg bg-[#9e9e9e]">
-                <p className="flex items-center justify-center w-[13px] h-[15px] text-sm text-white">
+                <p className="flex items-center justify-center w-[13px] h-[15px] text-white text-sm">
                   1
                 </p>
               </div>
               <div className="px-[9px] py-2 rounded-lg bg-[#e0e0e0]">
-                <p className="flex items-center justify-center w-[13px] h-[15px] text-sm text-black">
+                <p className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
                   2
                 </p>
               </div>
               <div className="px-[9px] py-2 rounded-lg bg-[#e0e0e0]">
-                <p className="flex items-center justify-center w-[13px] h-[15px] text-sm text-black">
+                <p className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
                   3
                 </p>
               </div>
-              <p className="text-base text-[#9e9e9e]">Next</p>
+              <p className="text-[#9e9e9e] text-base">Next</p>
             </div>
           </div>
         </div>
