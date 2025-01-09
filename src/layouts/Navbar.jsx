@@ -3,7 +3,6 @@ import user from "../assets/user.png";
 
 export default function Navbar() {
   return (
-    <div className="mb-[48px]">
       <div className="flex items-center justify-between h-[65px] px-[20px] md:px-[39px] bg-[#a01f1f]">
         <a href="/" className="flex items-center gap-2">
           <img className="w-14 h-[54px] rounded-[20px]" src={se_logo} />
@@ -51,6 +50,5 @@ export default function Navbar() {
           </div>
         </div>
       </div>
-    </div>
   );
 }

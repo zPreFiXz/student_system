@@ -6,7 +6,7 @@ export default function Profile() {
     <div className="bg-[#d9d9d9]">
       <Navbar />
       <div className="flex">
-        <div className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] rounded-[20px] border border-[#e9e9e9] bg-white ">
+        <div className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] mt-[48px] rounded-[20px] border border-[#e9e9e9] bg-white ">
           <div className="flex flex-col items-center w-full">
             <div className="flex items-center w-full h-[42px] px-[33px] py-[7px] rounded-tl-[20px] rounded-tr-[20px] bg-[#a01f1f]">
               <svg

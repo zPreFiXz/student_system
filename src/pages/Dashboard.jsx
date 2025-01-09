@@ -6,7 +6,7 @@ export default function Dashboard() {
       <Navbar />
       <div className="flex px-[16px] md:px-[96px]">
         <div
-          className="flex justify-center h-full w-full mb-[67px] rounded-[20px] bg-white"
+          className="flex justify-center h-full w-full mb-[67px] mt-[48px] rounded-[20px] bg-white"
           style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
         >
           <div className="flex flex-col items-center w-full">

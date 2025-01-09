@@ -7,7 +7,7 @@ export default function EditProfile() {
       <Navbar />
       <div className="flex">
         <div
-          className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] rounded-[20px] bg-white"
+          className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] mt-[48px] rounded-[20px] bg-white"
           style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
         >
           <div className="flex flex-col items-center w-full">
