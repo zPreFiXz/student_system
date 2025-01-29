@@ -1,9 +1,7 @@
-import Navbar from "../layouts/Navbar";
-
 export default function Dashboard() {
+  
   return (
-    <div className="w-full md:h-dvh bg-[#d9d9d9]">
-      <Navbar />
+    <div className="w-full xl:h-[calc(100dvh-65px)] md:h-dvh bg-[#d9d9d9]">
       <div className="flex px-[16px] md:px-[96px]">
         <div
           className="flex justify-center h-full w-full mb-[67px] mt-[48px] rounded-[20px] bg-white"
