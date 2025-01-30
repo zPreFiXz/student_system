@@ -15,6 +15,7 @@ export default function Dashboard() {
       .then((response) => {
         setProfiles(response.data);
         setLoading(false);
+        console.log(response.data);
       })
       .catch((error) => {
         console.log("Error fetching profiles:", error);
@@ -48,6 +49,20 @@ export default function Dashboard() {
               <p className="ml-[5px] text-white font-semibold text-xl">
                 รายชื่อนักศึกษาทั้งหมด
               </p>
+            </div>
+            <div>
+              {loading ? (
+                <p>Loading...</p>
+              ) : (
+                profiles.map((profile) => (
+                  <div className="flex" key={profile.id}>
+                    <div>{profile.id}</div>
+                    <div>{profile.name}</div>
+                    <div>{profile.email}</div>
+                    <div>{profile.age}</div>
+                  </div>
+                ))
+              )}
             </div>
             <div className="flex items-center gap-[7px] w-full mt-[31px] px-[30px] md:px-[69px]">
               <p>ปีการศึกษา</p>

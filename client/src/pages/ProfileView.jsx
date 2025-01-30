@@ -1,6 +1,30 @@
+import { useParams } from "react-router-dom";
+import  { useState, useEffect } from "react" 
+import axios from "axios";
 import edit_user from "../assets/edit_user.png";
 
 export default function ViewProfile() {
+  const {id} = useParams();
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
+
+  const fetchProfiles = () => {
+    axios
+      .get(`http://localhost:3000/api/profiles/${id}`)
+      .then((response) => {
+        setProfiles(response.data);
+        setLoading(false);
+        console.log(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching profiles:", error);
+        setLoading(false);
+      });
+  };
   return (
     <div className="h-full md:h-dvh lg:h-full bg-[#d9d9d9]">
       <div className="flex">
@@ -25,6 +49,16 @@ export default function ViewProfile() {
                 ข้อมูลนักศึกษา
               </p>
             </div>
+            {loading ? (
+                <p>Loading...</p>
+              ) : (
+                  <div>
+                    <div>{profiles.id}</div>
+                    <div>{profiles.name}</div>
+                    <div>{profiles.email}</div>
+                    <div>{profiles.age}</div>
+                  </div>
+              )}
             <div className="flex space-x-[-39px] mt-[36px]">
               <img src={edit_user} />
             </div>
