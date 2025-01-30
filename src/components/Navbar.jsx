@@ -41,7 +41,7 @@ export default function Navbar() {
               className="dropdown-content menu w-52 p-2 z-[1] rounded-box bg-base-100 shadow"
             >
               <li>
-                <a>ข้อมูลนักศึกษา</a>
+                <a href="/profile">ข้อมูลนักศึกษา</a>
               </li>
               <li>
                 <a>ออกจากระบบ</a>

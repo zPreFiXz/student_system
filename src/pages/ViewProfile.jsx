@@ -1,10 +1,8 @@
-import Navbar from "../layouts/Navbar";
 import edit_user from "../assets/edit_user.png";
 
 export default function ViewProfile() {
   return (
     <div className="h-full md:h-dvh lg:h-full bg-[#d9d9d9]">
-      <Navbar />
       <div className="flex">
         <div className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] mt-[48px] rounded-[20px] border border-[#e9e9e9] bg-white ">
           <div className="flex flex-col items-center w-full mb-[56.96px]">
