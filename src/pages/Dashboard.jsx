@@ -1,5 +1,27 @@
+import axios from "axios";
+import { useEffect, useState } from "react";
+
 export default function Dashboard() {
-  
+  const [profiles, setProfiles] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
+
+  const fetchProfiles = () => {
+    axios
+      .get("http://localhost:3000/api/profiles")
+      .then((response) => {
+        setProfiles(response.data);
+        setLoading(false);
+      })
+      .catch((error) => {
+        console.log("Error fetching profiles:", error);
+        setLoading(false);
+      });
+  };
+
   return (
     <div className="w-full xl:h-[calc(100dvh-65px)] md:h-dvh bg-[#d9d9d9]">
       <div className="flex px-[16px] md:px-[96px]">
