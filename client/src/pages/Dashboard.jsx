@@ -2,18 +2,18 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const [users, serUsers] = useState([]);
+  const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchUsers();
+    fetchProfiles();
   }, []);
 
-  const fetchUsers = () => {
+  const fetchProfiles = () => {
     axios
-      .get("http://localhost:3000/api/users")
+      .get("http://localhost:3000/api/profiles")
       .then((response) => {
-        serUsers(response.data);
+        setProfiles(response.data);
         setLoading(true);
         console.log(response.data);
       })
@@ -126,22 +126,22 @@ export default function Dashboard() {
                   </thead>
                   <tbody className="bg-white/[0.87]">
                     {loading ? (
-                      users.map((user) => (
-                        <tr key={user.user_id}>
+                      profiles.map((profile) => (
+                        <tr key={profile.user_id}>
                           <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {user.user_id}
+                            {profile.user_id}
                           </td>
                           <td className="px-4 py-2 font-light whitespace-nowrap ">
-                            {user.firstname}
+                            {profile.firstname}
                           </td>
                           <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {user.lastname}
+                            {profile.lastname}
                           </td>
                           <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {user.nickname}
+                            {profile.nickname}
                           </td>
                           <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {new Date(user.birthday).toLocaleDateString(
+                            {new Date(profile.birthday).toLocaleDateString(
                               "th-TH",
                               {
                                 day: "numeric",
@@ -151,10 +151,10 @@ export default function Dashboard() {
                             )}
                           </td>
                           <td className="px-4 py-2 font-light whitespace-nowrap">
-                            0987654321
+                            {profile.tel}
                           </td>
                           <td className="px-4 py-2 font-light break-words">
-                            stu6510014101@sskru.ac.th
+                            {profile.email}
                           </td>
                           <td className="px-4 py-2">
                             <button className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]">
@@ -179,7 +179,9 @@ export default function Dashboard() {
                         </tr>
                       ))
                     ) : (
-                      <div>Loading...</div>
+                      <tr>
+                        <td className="px-4 py-2 font-light text-center" colSpan={8}>Loading...</td>
+                      </tr>
                     )}
                   </tbody>
                 </table>

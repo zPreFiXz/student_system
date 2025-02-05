@@ -18,8 +18,8 @@ app.get("/api", (req, res) => {
   res.json({ message: "Welcome to our API!" });
 });
 
-// อ่านข้อมูล User ทั้งหมด
-app.get("/api/users", (req, res) => {
+// อ่านข้อมูล Profile ทั้งหมด
+app.get("/api/profiles", (req, res) => {
   const sql = "SELECT * FROM users";
   db.query(sql, (err, results) => {
     if (err) {
