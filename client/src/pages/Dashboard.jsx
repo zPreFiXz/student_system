@@ -2,24 +2,24 @@ import axios from "axios";
 import { useEffect, useState } from "react";
 
 export default function Dashboard() {
-  const [profiles, setProfiles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [users, serUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    fetchProfiles();
+    fetchUsers();
   }, []);
 
-  const fetchProfiles = () => {
+  const fetchUsers = () => {
     axios
-      .get("http://localhost:3000/api/profiles")
+      .get("http://localhost:3000/api/users")
       .then((response) => {
-        setProfiles(response.data);
-        setLoading(false);
+        serUsers(response.data);
+        setLoading(true);
         console.log(response.data);
       })
       .catch((error) => {
-        console.log("Error fetching profiles:", error);
-        setLoading(false);
+        console.log("Error fetching users:", error);
+        setLoading(true);
       });
   };
 
@@ -49,20 +49,6 @@ export default function Dashboard() {
               <p className="ml-[5px] text-white font-semibold text-xl">
                 รายชื่อนักศึกษาทั้งหมด
               </p>
-            </div>
-            <div>
-              {loading ? (
-                <p>Loading...</p>
-              ) : (
-                profiles.map((profile) => (
-                  <div className="flex" key={profile.id}>
-                    <div>{profile.id}</div>
-                    <div>{profile.name}</div>
-                    <div>{profile.email}</div>
-                    <div>{profile.age}</div>
-                  </div>
-                ))
-              )}
             </div>
             <div className="flex items-center gap-[7px] w-full mt-[31px] px-[30px] md:px-[69px]">
               <p>ปีการศึกษา</p>
@@ -139,49 +125,62 @@ export default function Dashboard() {
                     </tr>
                   </thead>
                   <tbody className="bg-white/[0.87]">
-                    <tr>
-                      <td className="px-4 py-2 font-light whitespace-nowrap">
-                        6510014101
-                      </td>
-                      <td className="px-4 py-2font-light whitespace-nowrap ">
-                        ลลิษา
-                      </td>
-                      <td className="px-4 py-2 font-light whitespace-nowrap">
-                        มโนบาล
-                      </td>
-                      <td className="px-4 py-2 font-light whitespace-nowrap">
-                        ลิซ่า
-                      </td>
-                      <td className="px-4 py-2 font-light whitespace-nowrap">
-                        1/01/2001
-                      </td>
-                      <td className="px-4 py-2 font-light whitespace-nowrap">
-                        0987654321
-                      </td>
-                      <td className="px-4 py-2 font-light break-words">
-                        stu6510014101@sskru.ac.th
-                      </td>
-                      <td className="px-4 py-2">
-                        <button className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]">
-                          <svg
-                            width={18}
-                            height={16}
-                            viewBox="0 0 18 16"
-                            fill="none"
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="w-[17px] h-4"
-                          >
-                            <g clipPath="url(#clip0_2077_116)">
-                              <path
-                                d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
-                                fill="white"
-                              />
-                            </g>
-                          </svg>
-                          <p className="text-white font-bold">ดูข้อมูล</p>
-                        </button>
-                      </td>
-                    </tr>
+                    {loading ? (
+                      users.map((user) => (
+                        <tr key={user.user_id}>
+                          <td className="px-4 py-2 font-light whitespace-nowrap">
+                            {user.user_id}
+                          </td>
+                          <td className="px-4 py-2 font-light whitespace-nowrap ">
+                            {user.firstname}
+                          </td>
+                          <td className="px-4 py-2 font-light whitespace-nowrap">
+                            {user.lastname}
+                          </td>
+                          <td className="px-4 py-2 font-light whitespace-nowrap">
+                            {user.nickname}
+                          </td>
+                          <td className="px-4 py-2 font-light whitespace-nowrap">
+                            {new Date(user.birthday).toLocaleDateString(
+                              "th-TH",
+                              {
+                                day: "numeric",
+                                month: "long",
+                                year: "numeric",
+                              }
+                            )}
+                          </td>
+                          <td className="px-4 py-2 font-light whitespace-nowrap">
+                            0987654321
+                          </td>
+                          <td className="px-4 py-2 font-light break-words">
+                            stu6510014101@sskru.ac.th
+                          </td>
+                          <td className="px-4 py-2">
+                            <button className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]">
+                              <svg
+                                width={18}
+                                height={16}
+                                viewBox="0 0 18 16"
+                                fill="none"
+                                xmlns="http://www.w3.org/2000/svg"
+                                className="w-[17px] h-4"
+                              >
+                                <g clipPath="url(#clip0_2077_116)">
+                                  <path
+                                    d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
+                                    fill="white"
+                                  />
+                                </g>
+                              </svg>
+                              <p className="text-white font-bold">ดูข้อมูล</p>
+                            </button>
+                          </td>
+                        </tr>
+                      ))
+                    ) : (
+                      <div>Loading...</div>
+                    )}
                   </tbody>
                 </table>
               </div>
