@@ -1,10 +1,15 @@
-import { Outlet } from "react-router-dom";
+import { Outlet, useLocation } from "react-router-dom";
 import Navbar from "../components/Navbar";
 
 const Layouts = () => {
+  // Routes without navbar
+  const location = useLocation();
+  const hideNavbarRoutes = ["/login"];
+  const showNavbar = !hideNavbarRoutes.includes(location.pathname);
+
   return (
     <div className="font-kanit">
-      <Navbar />
+      {showNavbar && <Navbar />}
       <Outlet />
     </div>
   );

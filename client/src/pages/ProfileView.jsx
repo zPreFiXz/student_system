@@ -1,30 +1,34 @@
 import { useParams } from "react-router-dom";
-import  { useState, useEffect } from "react" 
+import { useState, useEffect } from "react";
 import axios from "axios";
 import edit_user from "../assets/edit_user.png";
 
 export default function ViewProfile() {
-  const {id} = useParams();
-  const [profiles, setProfiles] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const { id } = useParams();
+  const [profile, setProfile] = useState([]);
+  const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchProfiles();
-  }, []);
+  const fetchProfile = () => {
+    const token = localStorage.getItem("token");
 
-  const fetchProfiles = () => {
     axios
-      .get(`http://localhost:3000/api/profiles/${id}`)
+      .get(`http://localhost:3000/api/profile/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
-        setProfiles(response.data);
-        setLoading(false);
-        console.log(response.data);
+        setProfile(response.data);
+        setLoading(true);
       })
       .catch((error) => {
-        console.log("Error fetching profiles:", error);
-        setLoading(false);
+        console.log("Error fetching profile:", error);
+        setLoading(true);
       });
   };
+
+  useEffect(() => {
+    fetchProfile();
+  }, []);
+
   return (
     <div className="h-full md:h-dvh lg:h-full bg-[#d9d9d9]">
       <div className="flex">
@@ -49,64 +53,92 @@ export default function ViewProfile() {
                 ข้อมูลนักศึกษา
               </p>
             </div>
-            {loading ? (
-                <p>Loading...</p>
-              ) : (
-                  <div>
-                    <div>{profiles.id}</div>
-                    <div>{profiles.name}</div>
-                    <div>{profiles.email}</div>
-                    <div>{profiles.age}</div>
-                  </div>
-              )}
+            {/* Image */}
             <div className="flex space-x-[-39px] mt-[36px]">
               <img src={edit_user} />
             </div>
-            <div className="flex space-x-[-39px]">
-              <p className="mt-[15px] text-[#9e1f1f] text-[24px] md:text-[28px] font-bold">
-                นางสาวลลิษา มโนบาล
-              </p>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-y-[15px] lg:gap-x-[200px] mx-auto mt-[36px]">
-              <div className="md:mt-0 text-gray-800 text-base font-semibold">
-                รหัสนักศึกษา
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                6510014101
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
-                ชื่อ-นามสกุล
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                นางสาวลลิษา มโนบาล
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
-                ชื่อเล่น
-              </div>
-              <div className=" text-gray-600 font-medium text-base">ลิซ่า</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                วัน/เดือน/ปีเกิด
-              </div>
-              <div className="text-gray-600 font-medium text-base">01/01/2001</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">รุ่น</div>
-              <div className="text-gray-600 font-medium text-base">SE10</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">สถานะ</div>
-              <div className="text-gray-600 font-medium text-base">กำลังศึกษาอยู่</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                โรงเรียนเดิม
-              </div>
-              <div className="text-gray-600 font-medium text-base">โรงเรียนศรีสะเกษวิทยาลัย</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                เบอร์โทรศัพท์
-              </div>
-              <div className="text-gray-600 font-medium text-base">0123456789</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">Email</div>
-              <div className="text-gray-600 font-medium text-base">stu6510014101@sskru.ac.th</div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                Facebook
-              </div>
-              <div className="text-gray-600 font-medium text-base">Lalisa Manoban</div>
-            </div>
+            {loading ? (
+              profile && (
+                <div>
+                  <div className="flex space-x-[-39px]">
+                    {/* Header */}
+                    <p className="mt-[15px] mx-auto text-[#9e1f1f] text-[24px] md:text-[28px] font-bold">
+                      {profile.title}
+                      {profile.firstname} {profile.lastname}
+                    </p>
+                  </div>
+                  <div className="md:grid md:grid-cols-2 md:gap-y-[15px] lg:gap-x-[200px] mx-auto mt-[36px]">
+                    <div className="md:mt-0 text-gray-800 text-base font-semibold">
+                      รหัสนักศึกษา
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.user_id}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
+                      ชื่อ-นามสกุล
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.title}
+                      {profile.firstname} {profile.lastname}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
+                      ชื่อเล่น
+                    </div>
+                    <div className=" text-gray-600 font-medium text-base">
+                      {profile.nickname}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      วัน/เดือน/ปีเกิด
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {new Date(profile.birthday).toLocaleDateString("th-TH", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      รุ่น
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.generation}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      สถานะ
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.status}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      โรงเรียนเดิม
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.original_school}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      เบอร์โทรศัพท์
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.tel}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      Email
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.email}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      Facebook
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.facebook}
+                    </div>
+                  </div>
+                </div>
+              )
+            ) : (
+              <div>Loading...</div>
+            )}
           </div>
         </div>
       </div>

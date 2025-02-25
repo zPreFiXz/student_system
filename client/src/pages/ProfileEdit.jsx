@@ -1,6 +1,79 @@
+import axios from "axios";
 import edit_user from "../assets/edit_user.png";
+import { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 
 export default function EditProfile() {
+  const { id } = useParams();
+  const navigate = useNavigate();
+  const [profile, setProfile] = useState({
+    user_id: "",
+    title: "",
+    firstname: "",
+    lastname: "",
+    nickname: "",
+    birthday: "",
+    generation: "",
+    github: "",
+    status: "",
+    original_school: "",
+    gpax: "",
+    address: "",
+    tel: "",
+    email: "",
+    facebook: "",
+    emergency_tel: "",
+    relationship: "",
+    congenital_disease: "",
+    allergic_thing: "",
+    health_coverage: "",
+    health_coverage_place: "",
+    military_status: "",
+  });
+  const [error, setError] = useState("");
+
+  const fetchProfile = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .get(`http://localhost:3000/api/profiles/${id}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setProfile(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching users:", error);
+      });
+  };
+
+  const handleChange = (e) => {
+    setProfile({ ...profile, [e.target.name]: e.target.value });
+  };
+
+  useEffect(() => {
+    fetchProfile();
+  }, [id]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const token = localStorage.getItem("token");
+
+    console.log(profile)
+
+    axios
+      .put(`http://localhost:3000/api/profiles/${id}`, profile, {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then(() => {
+        alert("Profile updated successfully!");
+        navigate("/profile");
+      })
+      .catch((error) => {
+        setError("Error updating profile.");
+      });
+  };
+
   return (
     <div className="bg-[#d9d9d9]">
       <div className="flex">
@@ -32,6 +105,7 @@ export default function EditProfile() {
                 แก้ไขข้อมูลนักศึกษา
               </p>
             </div>
+            {/* Image */}
             <div className="flex justify-start items-end space-x-[-39px] mt-[36px]">
               <img src={edit_user} />
               <div
@@ -55,12 +129,15 @@ export default function EditProfile() {
                 </svg>
               </div>
             </div>
-            <div className="md:grid grid-cols-2 md:w-[70%] mx-auto mt-[36px]">
+            <form
+              onSubmit={handleSubmit}
+              className="md:grid grid-cols-2 md:w-[70%] mx-auto mt-[36px]"
+            >
               <div className="md:w-[90%] mx-auto">
                 <div className="font-semibold text-base">รหัสนักศึกษา</div>
                 <input
                   type="text"
-                  placeholder="6510014101"
+                  value={profile.user_id || ""}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
@@ -71,7 +148,7 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
-                  placeholder="นางสาว"
+                  value={profile.title || ""}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
@@ -82,7 +159,7 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
-                  placeholder="ลลิษา"
+                  value={profile.firstname || ""}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
@@ -93,7 +170,7 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
-                  placeholder="มโนบาล"
+                  value={profile.lastname || ""}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full disabled:placeholder:text-[#909090]"
                   disabled
                 />
@@ -104,6 +181,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="nickname"
+                  value={profile.nickname || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -113,6 +193,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="birthday"
+                  value={profile.birthday || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -120,6 +203,9 @@ export default function EditProfile() {
                 <div className="mt-[13px] font-semibold text-base">รุ่น</div>
                 <input
                   type="text"
+                  name="generation"
+                  value={profile.generation || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -127,17 +213,25 @@ export default function EditProfile() {
                 <div className="mt-[13px] font-semibold text-base">Github</div>
                 <input
                   type="text"
+                  name="github"
+                  value={profile.github || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
               <div className="md:w-[90%] mx-auto">
                 <div className="mt-[13px] font-semibold text-base">สถานะ</div>
-                <select className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full">
-                  <option disabled selected>
+                <select
+                  name="status"
+                  value={profile.status || ""}
+                  onChange={handleChange}
+                  className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full"
+                >
+                  <option value="" disabled>
                     กรุณาเลือก
                   </option>
-                  <option>Han Solo</option>
-                  <option>Greedo</option>
+                  <option value="กำลังศึกษาอยู่">กำลังศึกษาอยู่</option>
+                  <option value="พ้นสภาพนักศึกษา">พ้นสภาพนักศึกษา</option>
                 </select>
               </div>
               <div className="md:w-[90%] mx-auto">
@@ -146,6 +240,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="original_school"
+                  value={profile.original_school || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -155,6 +252,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="gpax"
+                  value={profile.gpax || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -162,6 +262,9 @@ export default function EditProfile() {
                 <div className="mt-[13px] font-semibold text-base">ที่อยู่</div>
                 <input
                   type="text"
+                  name="address"
+                  value={profile.address || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -171,6 +274,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="tel"
+                  value={profile.tel || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -178,6 +284,9 @@ export default function EditProfile() {
                 <div className="mt-[13px] font-semibold text-base">Email</div>
                 <input
                   type="text"
+                  name="email"
+                  value={profile.email || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -187,6 +296,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="facebook"
+                  value={profile.facebook || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -196,6 +308,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="emergency_tel"
+                  value={profile.emergency_tel || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -205,6 +320,21 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="relationship"
+                  value={profile.relationship || ""}
+                  onChange={handleChange}
+                  className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
+                />
+              </div>
+              <div className="md:w-[90%] mx-auto">
+                <div className="mt-[13px] font-semibold text-base">
+                  โรคประจำตัว
+                </div>
+                <input
+                  type="text"
+                  name="congenital_disease"
+                  value={profile.congenital_disease || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -214,6 +344,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="allergic_thing"
+                  value={profile.allergic_thing || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -221,12 +354,18 @@ export default function EditProfile() {
                 <div className="mt-[13px] font-semibold text-base">
                   สิทธิการรักษาพยาบาล
                 </div>
-                <select className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full">
-                  <option disabled selected>
+                <select
+                  name="health_coverage"
+                  value={profile.health_coverage || ""}
+                  onChange={handleChange}
+                  className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full"
+                >
+                  <option value="" disabled>
                     กรุณาเลือก
                   </option>
-                  <option>Han Solo</option>
-                  <option>Greedo</option>
+                  <option value="บัตรทอง">บัตรทอง</option>
+                  <option value="ประกันสังคม">ประกันสังคม</option>
+                  <option value="ประกันสุขภาพ">ประกันสุขภาพ</option>
                 </select>
               </div>
               <div className="md:w-[90%] mx-auto">
@@ -235,6 +374,9 @@ export default function EditProfile() {
                 </div>
                 <input
                   type="text"
+                  name="health_coverage_place"
+                  value={profile.health_coverage_place || ""}
+                  onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
               </div>
@@ -242,53 +384,66 @@ export default function EditProfile() {
                 <div className="mt-[13px] font-semibold text-base">
                   ข้อมูลการเกณฑ์ทหาร
                 </div>
-                <select className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full">
-                  <option disabled selected>
+                <select
+                  name="military_status"
+                  value={profile.military_status || ""}
+                  onChange={handleChange}
+                  className="select select-bordered select-sm w-full h-[33px] mt-[11px] rounded-full"
+                >
+                  <option value="" disabled>
                     กรุณาเลือก
                   </option>
-                  <option>Han Solo</option>
-                  <option>Greedo</option>
+                  <option value="ผ่านการเกณฑ์ทหาร">ผ่านการเกณฑ์ทหาร</option>
+                  <option value="ยังไม่ผ่านการเกณฑ์ทหาร">
+                    ยังไม่ผ่านการเกณฑ์ทหาร
+                  </option>
+                  <option value="เรียน รด.">เรียน รด.</option>
                 </select>
               </div>
-            </div>
-            <div className="flex gap-2 md:gap-9 mt-[45px] mb-[67.96px]">
-              <button className="btn btn-success gap-[5px] w-[109px] p-2.5 rounded-full">
-                <svg
-                  width={25}
-                  height={25}
-                  viewBox="0 0 25 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  preserveAspectRatio="xMidYMid meet"
+              <div className="flex gap-2 md:gap-9 mt-[45px] mb-[67.96px]">
+                {/* Save Button */}
+                <button
+                  type="submit"
+                  className="btn btn-success gap-[5px] w-[109px] p-2.5 rounded-full"
                 >
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M6.5 2.03833C5.96957 2.03833 5.46086 2.24904 5.08579 2.62412C4.71071 2.99919 4.5 3.5079 4.5 4.03833V20.0383C4.5 20.5688 4.71071 21.0775 5.08579 21.4525C5.46086 21.8276 5.96957 22.0383 6.5 22.0383H18.5C19.0304 22.0383 19.5391 21.8276 19.9142 21.4525C20.2893 21.0775 20.5 20.5688 20.5 20.0383V6.45233C20.4999 5.92194 20.2891 5.41332 19.914 5.03833L17.5 2.62433C17.125 2.24923 16.6164 2.03844 16.086 2.03833H6.5ZM6.5 4.03833H16.086L18.5 6.45233V20.0383H6.5V4.03833ZM16.738 10.8313C16.8335 10.7391 16.9097 10.6287 16.9621 10.5067C17.0145 10.3847 17.0421 10.2535 17.0433 10.1207C17.0444 9.98795 17.0191 9.85627 16.9688 9.73338C16.9185 9.61048 16.8443 9.49883 16.7504 9.40493C16.6565 9.31104 16.5449 9.23679 16.422 9.18651C16.2991 9.13623 16.1674 9.11093 16.0346 9.11208C15.9018 9.11323 15.7706 9.14082 15.6486 9.19323C15.5266 9.24564 15.4162 9.32182 15.324 9.41733L11.082 13.6603L9.667 12.2453C9.4784 12.0632 9.2258 11.9624 8.9636 11.9647C8.7014 11.9669 8.45059 12.0721 8.26518 12.2575C8.07977 12.4429 7.9746 12.6937 7.97233 12.9559C7.97005 13.2181 8.07084 13.4707 8.253 13.6593L10.303 15.7103C10.4052 15.8125 10.5264 15.8936 10.6599 15.9489C10.7934 16.0042 10.9365 16.0327 11.081 16.0327C11.2255 16.0327 11.3686 16.0042 11.5021 15.9489C11.6356 15.8936 11.7568 15.8125 11.859 15.7103L16.738 10.8313Z"
-                    fill="white"
-                  />
-                </svg>
-                <p className="text-white font-semibold text-xl">บันทึก</p>
-              </button>
-              <button className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full">
-                <svg
-                  width={25}
-                  height={25}
-                  viewBox="0 0 25 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <path
-                    d="M19.5 3.03833H5.5C4.96957 3.03833 4.46086 3.24904 4.08579 3.62412C3.71071 3.99919 3.5 4.5079 3.5 5.03833V19.0383C3.5 19.5688 3.71071 20.0775 4.08579 20.4525C4.46086 20.8276 4.96957 21.0383 5.5 21.0383H19.5C20.0304 21.0383 20.5391 20.8276 20.9142 20.4525C21.2893 20.0775 21.5 19.5688 21.5 19.0383V5.03833C21.5 4.5079 21.2893 3.99919 20.9142 3.62412C20.5391 3.24904 20.0304 3.03833 19.5 3.03833ZM19.5 19.0383H5.5V5.03833H19.5V19.0383ZM17.5 8.43833L13.9 12.0383L17.5 15.6383L16.1 17.0383L12.5 13.4383L8.9 17.0383L7.5 15.6383L11.1 12.0383L7.5 8.43833L8.9 7.03833L12.5 10.6383L16.1 7.03833L17.5 8.43833Z"
-                    fill="white"
-                  />
-                </svg>
-                <p className="text-white font-semibold text-xl">ยกเลิก</p>
-              </button>
-            </div>
+                  <svg
+                    width={25}
+                    height={25}
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    <path
+                      fillRule="evenodd"
+                      clipRule="evenodd"
+                      d="M6.5 2.03833C5.96957 2.03833 5.46086 2.24904 5.08579 2.62412C4.71071 2.99919 4.5 3.5079 4.5 4.03833V20.0383C4.5 20.5688 4.71071 21.0775 5.08579 21.4525C5.46086 21.8276 5.96957 22.0383 6.5 22.0383H18.5C19.0304 22.0383 19.5391 21.8276 19.9142 21.4525C20.2893 21.0775 20.5 20.5688 20.5 20.0383V6.45233C20.4999 5.92194 20.2891 5.41332 19.914 5.03833L17.5 2.62433C17.125 2.24923 16.6164 2.03844 16.086 2.03833H6.5ZM6.5 4.03833H16.086L18.5 6.45233V20.0383H6.5V4.03833ZM16.738 10.8313C16.8335 10.7391 16.9097 10.6287 16.9621 10.5067C17.0145 10.3847 17.0421 10.2535 17.0433 10.1207C17.0444 9.98795 17.0191 9.85627 16.9688 9.73338C16.9185 9.61048 16.8443 9.49883 16.7504 9.40493C16.6565 9.31104 16.5449 9.23679 16.422 9.18651C16.2991 9.13623 16.1674 9.11093 16.0346 9.11208C15.9018 9.11323 15.7706 9.14082 15.6486 9.19323C15.5266 9.24564 15.4162 9.32182 15.324 9.41733L11.082 13.6603L9.667 12.2453C9.4784 12.0632 9.2258 11.9624 8.9636 11.9647C8.7014 11.9669 8.45059 12.0721 8.26518 12.2575C8.07977 12.4429 7.9746 12.6937 7.97233 12.9559C7.97005 13.2181 8.07084 13.4707 8.253 13.6593L10.303 15.7103C10.4052 15.8125 10.5264 15.8936 10.6599 15.9489C10.7934 16.0042 10.9365 16.0327 11.081 16.0327C11.2255 16.0327 11.3686 16.0042 11.5021 15.9489C11.6356 15.8936 11.7568 15.8125 11.859 15.7103L16.738 10.8313Z"
+                      fill="white"
+                    />
+                  </svg>
+                  <p className="text-white font-semibold text-xl">บันทึก</p>
+                </button>
+                {/* Cancel Button */}
+                <button className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full">
+                  <svg
+                    width={25}
+                    height={25}
+                    viewBox="0 0 25 25"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    className="w-6 h-6"
+                    preserveAspectRatio="xMidYMid meet"
+                  >
+                    <path
+                      d="M19.5 3.03833H5.5C4.96957 3.03833 4.46086 3.24904 4.08579 3.62412C3.71071 3.99919 3.5 4.5079 3.5 5.03833V19.0383C3.5 19.5688 3.71071 20.0775 4.08579 20.4525C4.46086 20.8276 4.96957 21.0383 5.5 21.0383H19.5C20.0304 21.0383 20.5391 20.8276 20.9142 20.4525C21.2893 20.0775 21.5 19.5688 21.5 19.0383V5.03833C21.5 4.5079 21.2893 3.99919 20.9142 3.62412C20.5391 3.24904 20.0304 3.03833 19.5 3.03833ZM19.5 19.0383H5.5V5.03833H19.5V19.0383ZM17.5 8.43833L13.9 12.0383L17.5 15.6383L16.1 17.0383L12.5 13.4383L8.9 17.0383L7.5 15.6383L11.1 12.0383L7.5 8.43833L8.9 7.03833L12.5 10.6383L16.1 7.03833L17.5 8.43833Z"
+                      fill="white"
+                    />
+                  </svg>
+                  <p className="text-white font-semibold text-xl">ยกเลิก</p>
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       </div>

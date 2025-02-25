@@ -1,27 +1,31 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 
 export default function Dashboard() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    fetchProfiles();
-  }, []);
-
   const fetchProfiles = () => {
+    const token = localStorage.getItem("token");
+
     axios
-      .get("http://localhost:3000/api/profiles")
+      .get("http://localhost:3000/api/profiles", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
       .then((response) => {
         setProfiles(response.data);
         setLoading(true);
-        console.log(response.data);
       })
       .catch((error) => {
         console.log("Error fetching users:", error);
         setLoading(true);
       });
   };
+
+  useEffect(() => {
+    fetchProfiles();
+  }, []);
 
   return (
     <div className="w-full xl:h-[calc(100dvh-65px)] md:h-dvh bg-[#d9d9d9]">
@@ -50,20 +54,22 @@ export default function Dashboard() {
                 รายชื่อนักศึกษาทั้งหมด
               </p>
             </div>
+            {/* Year */}
             <div className="flex items-center gap-[7px] w-full mt-[31px] px-[30px] md:px-[69px]">
               <p>ปีการศึกษา</p>
               <select className="select select-bordered select-sm w-auto h-[33px] rounded-full">
-                <option selected>2567</option>
+                <option>2567</option>
                 <option>2568</option>
                 <option>2569</option>
               </select>
             </div>
+            {/* Entries per page */}
             <div className="w-full mt-[36px] px-[30px] md:px-[69px]">
               <div className="md:flex">
                 <div className="flex items-center">
                   <p>แสดง</p>
                   <select className="select select-bordered select-sm w-auto h-[33px] mx-[12px] rounded-full">
-                    <option selected>10</option>
+                    <option>10</option>
                     <option>20</option>
                     <option>30</option>
                   </select>
@@ -91,12 +97,14 @@ export default function Dashboard() {
                   </svg>
                 </div>
               </div>
+              {/* Container */}
               <div
                 className="overflow-x-auto"
                 style={{
                   filter: "drop-shadow(5px 5px 100px rgba(0,0,0,0.25))",
                 }}
               >
+                {/* Table */}
                 <table className="table-fixed overflow-hidden xl:w-full mt-[36px] border-separate border-spacing-0 rounded-[20px] bg-[#d9d9d9]">
                   <thead className="bg-[#d9d9d9]">
                     <tr>
@@ -124,6 +132,7 @@ export default function Dashboard() {
                       <th className="px-4 py-2"></th>
                     </tr>
                   </thead>
+                  {/* Body Table */}
                   <tbody className="bg-white/[0.87]">
                     {loading ? (
                       profiles.map((profile) => (
@@ -156,8 +165,12 @@ export default function Dashboard() {
                           <td className="px-4 py-2 font-light break-words">
                             {profile.email}
                           </td>
+                          {/* Detail Button */}
                           <td className="px-4 py-2">
-                            <button className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]">
+                            <Link
+                              to={`/profile/${profile.user_id}`}
+                              className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]"
+                            >
                               <svg
                                 width={18}
                                 height={16}
@@ -174,19 +187,25 @@ export default function Dashboard() {
                                 </g>
                               </svg>
                               <p className="text-white font-bold">ดูข้อมูล</p>
-                            </button>
+                            </Link>
                           </td>
                         </tr>
                       ))
                     ) : (
                       <tr>
-                        <td className="px-4 py-2 font-light text-center" colSpan={8}>Loading...</td>
+                        <td
+                          className="px-4 py-2 font-light text-center"
+                          colSpan={8}
+                        >
+                          Loading...
+                        </td>
                       </tr>
                     )}
                   </tbody>
                 </table>
               </div>
             </div>
+            {/* Pagination */}
             <div className="flex items-center justify-center gap-[12px] mt-[36px] mb-[67.96px]">
               <p className="text-[#9e9e9e] text-base">Previous</p>
               <div className="px-[9px] py-2 rounded-lg bg-[#9e9e9e]">
