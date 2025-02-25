@@ -30,7 +30,7 @@ export default function Navbar() {
   };
 
   useEffect(() => {
-    fetchProfile()
+    fetchProfile();
   }, []);
 
   return (

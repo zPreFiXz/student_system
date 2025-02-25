@@ -12,7 +12,7 @@ export default function ViewProfile() {
     const token = localStorage.getItem("token");
 
     axios
-      .get(`http://localhost:3000/api/profile/${id}`, {
+      .get(`http://localhost:3000/api/profiles/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -20,7 +20,7 @@ export default function ViewProfile() {
         setLoading(true);
       })
       .catch((error) => {
-        console.log("Error fetching profile:", error);
+        console.log("Error fetching users:", error);
         setLoading(true);
       });
   };
@@ -30,7 +30,7 @@ export default function ViewProfile() {
   }, []);
 
   return (
-    <div className="h-full md:h-dvh lg:h-full bg-[#d9d9d9]">
+    <div className="h-full md:h-dvh lg:h-full xl:h-screen bg-[#d9d9d9]">
       <div className="flex">
         <div className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] mt-[48px] rounded-[20px] border border-[#e9e9e9] bg-white ">
           <div className="flex flex-col items-center w-full mb-[56.96px]">
@@ -137,7 +137,7 @@ export default function ViewProfile() {
                 </div>
               )
             ) : (
-              <div>Loading...</div>
+              <div className="h-[300px] mt-[100px]">Loading...</div>
             )}
           </div>
         </div>

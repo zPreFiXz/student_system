@@ -2,6 +2,7 @@ import se_logo from "../../assets/se_logo.png";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -19,24 +20,39 @@ const Login = () => {
         }
       );
       localStorage.setItem("token", response.data.token);
-      navigate("/dashboard");
-    } catch (err) {
-      alert("ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง");
-      console.log(err);
+      Swal.fire({
+        icon: "success",
+        title: "เข้าสู่ระบบสำเร็จ!",
+        customClass: {
+          title: 'font-kanit',
+        },
+      }).then(() => {
+        navigate("/dashboard");
+      });
+    } catch {
+      Swal.fire({
+        icon: "error",
+        title: "ชื่อผู้ใช้งานหรือรหัสผ่านไม่ถูกต้อง",
+        customClass: {
+          title: 'font-kanit',
+        },
+      });
     }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-dvh md:h-dvh bg-[#d9d9d9]">
+    <div className="flex flex-col justify-center items-center h-dvh md:h-dvh bg-[#d9d9d9] font-kanit">
       <div className="flex flex-col justify-center items-center md:w-[624px] xl:w-[1248px] h-[445px] xl:px-[131px] py-[65px] mx-auto">
         <div
           className="flex items-center justify-center w-0 md:w-[700px] xl:w-[1248px] h-[445px] rounded-[20px] bg-white"
           style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
         >
+          {/* Image Desktop */}
           <img
             src={se_logo}
             className="xl:w-[332px] xl:h-[315px] mx-auto rounded-[20px]"
           />
+          {/* Image Mobile */}
           <div className="w-[340px] md:w-[420px] xl:w-[624px] md:h-[445px] rounded-[20px] md:rounded-tl-[0px] md:rounded-bl-[0px] bg-[#9f1920]">
             <img
               src={se_logo}
@@ -68,7 +84,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
                 className="input input-bordered w-full h-[45px] rounded-full"
               />
-              <button className="w-full h-[45px] mt-[32px] mb-[45px] rounded-full bg-[#650005] text-white font-semibold text-xl">
+              <button type="submit" className="w-full h-[45px] mt-[32px] mb-[45px] rounded-full bg-[#650005] text-white font-semibold text-xl">
                 เข้าสู่ระบบ
               </button>
             </form>
