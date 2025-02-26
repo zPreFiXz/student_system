@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import edit_user from "../assets/edit_user.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
+import default_profile from "../assets/default_profile.png";
 
 export default function Profile() {
   const [profile, setProfile] = useState([]);
@@ -51,7 +52,14 @@ export default function Profile() {
             </div>
             {/* Image */}
             <div className="flex space-x-[-39px] mt-[36px]">
-              <img src={edit_user} />
+              <img
+                src={
+                  profile.image
+                    ? `http://localhost:3000/uploads/${profile.image}`
+                    : default_profile
+                }
+                className="h-[151px] w-[151px] rounded-full border border-gray-300"
+              />
             </div>
             <div className="flex space-x-[-39px]">
               {/* Header */}
@@ -188,7 +196,10 @@ export default function Profile() {
               </div>
             </div>
             <div className="mt-[36px] mb-[56.96px]">
-              <Link to={`/profile/edit/${profile.user_id}`} className="btn btn-warning gap-[5px] w-full p-2.5 rounded-full">
+              <Link
+                to={`/profile/edit/${profile.user_id}`}
+                className="btn btn-warning gap-[5px] w-full p-2.5 rounded-full"
+              >
                 <svg
                   width={24}
                   height={25}

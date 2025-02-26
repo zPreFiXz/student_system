@@ -1,6 +1,10 @@
 const express = require("express");
 const router = express.Router();
 const { db } = require("../configs/db");
+const multer = require("multer");
+const path = require("path");
+
+const app = express();
 
 // อ่านข้อมูล Profile ของ User ที่ Login
 router.get("/profile", (req, res) => {
@@ -52,8 +56,33 @@ router.post("/profiles", (req, res) => {
   });
 });
 
+// ตั้งค่าการเก็บไฟล์
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+
+// ตรวจสอบประเภทไฟล์ (เฉพาะภาพ)
+const fileFilter = (req, file, cb) => {
+  const allowedTypes = ["image/jpeg", "image/png", "image/jpg"];
+  if (allowedTypes.includes(file.mimetype)) {
+    cb(null, true);
+  } else {
+    cb(
+      new Error("Invalid file type. Only JPEG, PNG, and JPG are allowed."),
+      false
+    );
+  }
+};
+
+const upload = multer({ storage, fileFilter });
+
 // อัปเดตข้อมูล Profile
-router.put("/profiles/:id", (req, res) => {
+router.put("/profiles/:id", upload.single("image"), (req, res) => {
   const { id } = req.params;
   const {
     nickname,
@@ -61,6 +90,7 @@ router.put("/profiles/:id", (req, res) => {
     generation,
     github,
     status,
+    image,
     original_school,
     gpax,
     address,
@@ -75,8 +105,12 @@ router.put("/profiles/:id", (req, res) => {
     health_coverage_place,
     military_status,
   } = req.body;
+
+  const imagePath = req.file ? req.file.path : null;
+  
+  console.log(req.body);
   const sql =
-    "UPDATE users SET nickname = ?, birthday = ?, generation = ?, github = ?, status = ?, original_school = ?, gpax =?, address = ?, tel = ?, email = ?, facebook = ?, emergency_tel = ?, relationship = ?, congenital_disease = ?, allergic_thing = ?, health_coverage =?, health_coverage_place = ?, military_status = ? WHERE user_id = ?";
+    "UPDATE users SET nickname = ?, birthday = ?, generation = ?, github = ?, status = ?, image = ?, original_school = ?, gpax =?, address = ?, tel = ?, email = ?, facebook = ?, emergency_tel = ?, relationship = ?, congenital_disease = ?, allergic_thing = ?, health_coverage =?, health_coverage_place = ?, military_status = ? WHERE user_id = ?";
   db.query(
     sql,
     [
@@ -85,6 +119,7 @@ router.put("/profiles/:id", (req, res) => {
       generation,
       github,
       status,
+      imagePath,
       original_school,
       gpax,
       address,

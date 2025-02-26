@@ -1,5 +1,5 @@
 import axios from "axios";
-import edit_user from "../assets/edit_user.png";
+import default_profile from "../assets/default_profile.png";
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -17,6 +17,7 @@ export default function EditProfile() {
     generation: "",
     github: "",
     status: "",
+    image: "",
     original_school: "",
     gpax: "",
     address: "",
@@ -31,8 +32,11 @@ export default function EditProfile() {
     health_coverage_place: "",
     military_status: "",
   });
+  const [loading, setLoading] = useState(false);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [selectedFile, setSelectedFile] = useState(null);
 
-  const fetchProfile = () => {
+  const fetchProfile = async () => {
     const token = localStorage.getItem("token");
 
     axios
@@ -40,7 +44,15 @@ export default function EditProfile() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setProfile(response.data);
+        const updatedProfile = {
+          ...response.data,
+          image: response.data.image
+            ? `http://localhost:3000/uploads/${response.data.image}`
+            : "",
+        };
+
+        setProfile(updatedProfile);
+        setPreviewImage(updatedProfile.image);
         setLoading(true);
       })
       .catch((error) => {
@@ -53,23 +65,51 @@ export default function EditProfile() {
     setProfile({ ...profile, [e.target.name]: e.target.value });
   };
 
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewImage(URL.createObjectURL(file));
+    }
+  };
+
   useEffect(() => {
     fetchProfile();
   }, [id]);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+
+    const formData = new FormData();
+    Object.keys(profile).forEach((key) => {
+      if (key !== "image") {
+        formData.append(key, profile[key]);
+      }
+    });
+
+    if (selectedFile) {
+      formData.append("image", selectedFile);
+    }
+
     const token = localStorage.getItem("token");
 
-    axios.put(`http://localhost:3000/api/profiles/${id}`, profile, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    Swal.fire({
-      icon: "success",
-      title: "อัพเดตโปรไฟล์สำเร็จ!",
-    }).then(() => {
-      navigate("/profile");
-    });
+    try {
+      await axios.put(`http://localhost:3000/api/profiles/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data",
+        },
+      });
+
+      Swal.fire({
+        icon: "success",
+        title: "อัพเดตโปรไฟล์สำเร็จ!",
+      }).then(() => {
+        navigate("/profile");
+      });
+    } catch (error) {
+      console.error("Error updating profile:", error);
+    }
   };
 
   return (
@@ -79,7 +119,11 @@ export default function EditProfile() {
           className="flex justify-center w-full mx-[16px] md:mx-[77px] mb-[67px] mt-[48px] rounded-[20px] bg-white"
           style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
         >
-          <div className="flex flex-col items-center w-full">
+          <form
+            onSubmit={handleSubmit}
+            encType="multipart/form-data"
+            className="flex flex-col items-center w-full"
+          >
             <div className="flex items-center w-full h-[42px] px-[33px] py-[7px] rounded-tl-[20px] rounded-tr-[20px] bg-[#a01f1f]">
               <svg
                 width={31}
@@ -104,10 +148,15 @@ export default function EditProfile() {
               </p>
             </div>
             {/* Image */}
-            <div className="flex justify-start items-end space-x-[-39px] mt-[36px]">
-              <img src={edit_user} />
-              <div
-                className="flex justify-center items-center h-[51.17px] w-[51.17px] px-[11px] py-3 rounded-[25.58px] bg-white"
+            <div className="flex justify-center items-end space-x-[-39px] mt-[36px]">
+              <img
+                src={previewImage || profile.image || default_profile}
+                className="h-[151px] w-[151px] rounded-full border border-gray-300 object-cover"
+              />
+              {/* Upload Button */}
+              <label
+                htmlFor="file-upload"
+                className="flex justify-center items-center h-[51.17px] w-[51.17px] px-[11px] py-3 rounded-full bg-white cursor-pointer"
                 style={{ boxShadow: "0px 1px 4px 0 rgba(26,15,1,0.12)" }}
               >
                 <svg
@@ -125,12 +174,18 @@ export default function EditProfile() {
                     fill="#727272"
                   />
                 </svg>
-              </div>
+              </label>
+
+              {/* Hidden Input */}
+              <input
+                id="file-upload"
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
             </div>
-            <form
-              onSubmit={handleSubmit}
-              className="md:grid grid-cols-2 md:w-[70%] mx-auto mt-[36px]"
-            >
+            <div className="md:grid grid-cols-2 md:w-[70%] mx-auto mt-[36px]">
               <div className="md:w-[90%] mx-auto">
                 <div className="font-semibold text-base">รหัสนักศึกษา</div>
                 <input
@@ -398,7 +453,7 @@ export default function EditProfile() {
                   <option value="เรียน รด.">เรียน รด.</option>
                 </select>
               </div>
-            </form>
+            </div>
             <div className="flex gap-2 md:gap-9 mt-[45px] mb-[67.96px]">
               {/* Save Button */}
               <button
@@ -442,7 +497,7 @@ export default function EditProfile() {
                 <p className="text-white font-semibold text-xl">ยกเลิก</p>
               </button>
             </div>
-          </div>
+          </form>
         </div>
       </div>
     </div>

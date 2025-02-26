@@ -1,7 +1,7 @@
 import { useParams } from "react-router-dom";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import edit_user from "../assets/edit_user.png";
+import default_profile from "../assets/default_profile.png";
 
 export default function ViewProfile() {
   const { id } = useParams();
@@ -55,7 +55,14 @@ export default function ViewProfile() {
             </div>
             {/* Image */}
             <div className="flex space-x-[-39px] mt-[36px]">
-              <img src={edit_user} />
+              <img
+                src={
+                  profile.image
+                    ? `http://localhost:3000/uploads/${profile.image}`
+                    : default_profile
+                }
+                className="h-[151px] w-[151px] rounded-full border border-gray-300"
+              />
             </div>
             {loading ? (
               profile && (

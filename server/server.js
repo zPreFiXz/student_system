@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const bcrypt = require("bcrypt");
 const morgan = require("morgan");
+const path = require("path");
 
 const apiRoute = require("./routes/api");
 const loginRoute = require("./routes/auth");
@@ -12,6 +13,7 @@ const app = express();
 app.use(bodyParser.json());
 app.use(cors());
 app.use(morgan("dev"));
+app.use('/uploads', express.static(path.join(__dirname, '')));
 
 // Login API
 app.use("/api/auth", loginRoute);

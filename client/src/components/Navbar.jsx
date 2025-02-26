@@ -1,9 +1,9 @@
 import { Link, useNavigate } from "react-router-dom";
 import se_logo from "../assets/se_logo.png";
-import user from "../assets/user.png";
 import { links } from "../utils/links";
 import axios from "axios";
 import { useEffect, useState } from "react";
+import default_profile from "../assets/default_profile.png";
 
 export default function Navbar() {
   const [profile, setProfile] = useState([]);
@@ -43,7 +43,14 @@ export default function Navbar() {
         </div>
       </Link>
       <div className="flex items-center gap-2">
-        <img src={user} />
+        <img
+          src={
+            profile.image
+              ? `http://localhost:3000/uploads/${profile.image}`
+              : default_profile
+          }
+          className="h-[45px] w-[45px] rounded-full border border-gray-300"
+        />
         {/* Dropdown */}
         <div className="dropdown dropdown-end">
           <div
