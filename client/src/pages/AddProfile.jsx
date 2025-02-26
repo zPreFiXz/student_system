@@ -44,12 +44,24 @@ export default function AddProfile() {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {
-        alert("Profile added successfully!");
+        Swal.fire({
+          icon: "success",
+          title: "เพิ่มข้อมูลนักศึกษาสำเร็จ!",
+          customClass: {
+            title: "font-kanit",
+          },
+        });
         navigate("/dashboard");
       })
       .catch((error) => {
         console.error("Error adding profile:", error);
-        alert("Failed to add profile.");
+        Swal.fire({
+          icon: "error",
+          title: "กรุณากรอกข้อมูลใหม่!",
+          customClass: {
+            title: "font-kanit",
+          },
+        });
       });
   };
 

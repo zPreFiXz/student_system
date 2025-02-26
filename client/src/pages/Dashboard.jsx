@@ -1,6 +1,7 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function Dashboard() {
   const [profiles, setProfiles] = useState([]);
@@ -9,6 +10,7 @@ export default function Dashboard() {
   const [limit, setLimit] = useState(10);
   const [roleAdmin, setRoleAdmin] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [searchTerm, setSearchTerm] = useState("");
 
   const fetchProfiles = (year) => {
     const token = localStorage.getItem("token");
@@ -19,9 +21,9 @@ export default function Dashboard() {
       })
       .then((response) => {
         const yearPrefix = year.slice(-2);
-        const filteredProfiles = response.data
-          .filter((profile) => profile.user_id.startsWith(yearPrefix))
-          .slice(0, limit * 3);
+        const filteredProfiles = response.data.filter((profile) =>
+          profile.user_id.startsWith(yearPrefix)
+        );
 
         setProfiles(filteredProfiles);
         setLoading(true);
@@ -68,27 +70,57 @@ export default function Dashboard() {
     }
   };
 
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value);
+  };
+
+  const filteredProfiles = profiles.filter((profile) =>
+    Object.values(profile)
+      .join(" ")
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase())
+  );
+
   const startIndex = (currentPage - 1) * limit;
-  const displayedProfiles = profiles.slice(startIndex, startIndex + limit);
+  const displayedProfiles = filteredProfiles.slice(
+    startIndex,
+    startIndex + limit
+  );
 
   const handleDelete = (user_id) => {
-    if (window.confirm("Are you sure you want to delete this profile?")) {
-      const token = localStorage.getItem("token");
-      axios
-        .delete(`http://localhost:3000/api/profiles/${user_id}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        })
-        .then(() => {
-          alert("Profile deleted successfully!");
-          setProfiles(
-            profiles.filter((profile) => profile.user_id !== user_id)
-          );
-          window.location.reload();
-        })
-        .catch((error) => {
-          console.error("Error deleting profile:", error);
-        });
-    }
+    Swal.fire({
+      title: "คุณต้องการลบข้อมูลนี้ไหม?",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      customClass: {
+        title: "font-kanit",
+      },
+    }).then((result) => {
+      if (result.isConfirmed) {
+        const token = localStorage.getItem("token");
+        axios
+          .delete(`http://localhost:3000/api/profiles/${user_id}`, {
+            headers: { Authorization: `Bearer ${token}` },
+          })
+          .then(() => {
+            Swal.fire({
+              icon: "success",
+              title: "ลบข้อมูลสำเร็จ!",
+              customClass: {
+                title: "font-kanit",
+              },
+            });
+            setProfiles(
+              profiles.filter((profile) => profile.user_id !== user_id)
+            );
+          })
+          .catch((error) => {
+            console.error("Error deleting profile:", error);
+          });
+      }
+    });
   };
 
   return (
@@ -151,6 +183,8 @@ export default function Dashboard() {
                     type="text"
                     className="input input-bordered w-full h-[33px] pl-[36px] rounded-full"
                     placeholder="ค้นหา..."
+                    value={searchTerm}
+                    onChange={handleSearchChange}
                   />
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -228,7 +262,7 @@ export default function Dashboard() {
                   {/* Body Table */}
                   <tbody className="bg-white/[0.87]">
                     {loading ? (
-                      profiles.length > 0 ? (
+                      displayedProfiles.length > 0 ? (
                         displayedProfiles.map((profile, index) => (
                           <tr key={index}>
                             <td className="px-4 py-2 font-light whitespace-nowrap">
