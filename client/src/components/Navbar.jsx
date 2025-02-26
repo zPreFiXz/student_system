@@ -42,11 +42,12 @@ export default function Navbar() {
           ระบบฐานข้อมูลนักศึกษาสาขาวิชา
         </div>
       </Link>
+      {/* Profile Image */}
       <div className="flex items-center gap-2">
         <img
           src={
             profile.image
-              ? `http://localhost:3000/uploads/${profile.image}`
+              ? `http://localhost:3000/${profile.image}`
               : default_profile
           }
           className="h-[45px] w-[45px] rounded-full border border-gray-300"

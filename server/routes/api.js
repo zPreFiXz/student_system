@@ -3,6 +3,7 @@ const router = express.Router();
 const { db } = require("../configs/db");
 const multer = require("multer");
 const path = require("path");
+const fs = require("fs");
 
 const app = express();
 
@@ -106,9 +107,37 @@ router.put("/profiles/:id", upload.single("image"), (req, res) => {
     military_status,
   } = req.body;
 
-  const imagePath = req.file ? req.file.path : null;
-  
-  console.log(req.body);
+  const imagePath = req.file
+    ? req.file.path
+    : image.split("http://localhost:3000/")[1];
+
+  // ดึงรูปโปรไฟล์เก่าจาก DB
+  const sqlGetOldImage = "SELECT image FROM users WHERE user_id = ?";
+  db.query(sqlGetOldImage, [id], (err, result) => {
+    if (err) return res.status(500).json({ error: err.message });
+
+    if (result.length === 0) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const oldImage = result[0].image;
+
+    // ลบรูปโปรไฟล์เก่า
+    if (oldImage !== imagePath) {
+      const oldImagePath = path.join(__dirname, "..", oldImage);
+
+      if (fs.existsSync(oldImagePath)) {
+        fs.unlink(oldImagePath, (err) => {
+          if (err) {
+            console.error("Error deleting old image:", err);
+          } else {
+            console.log("Old image deleted successfully.");
+          }
+        });
+      }
+    }
+  });
+
   const sql =
     "UPDATE users SET nickname = ?, birthday = ?, generation = ?, github = ?, status = ?, image = ?, original_school = ?, gpax =?, address = ?, tel = ?, email = ?, facebook = ?, emergency_tel = ?, relationship = ?, congenital_disease = ?, allergic_thing = ?, health_coverage =?, health_coverage_place = ?, military_status = ? WHERE user_id = ?";
   db.query(

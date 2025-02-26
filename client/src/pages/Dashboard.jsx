@@ -5,16 +5,30 @@ import { Link } from "react-router-dom";
 export default function Dashboard() {
   const [profiles, setProfiles] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [selectedYear, setSelectedYear] = useState("2565");
+  const [limit, setLimit] = useState(10);
+  const [currentPage, setCurrentPage] = useState(1); // สถานะของหน้าปัจจุบัน
 
-  const fetchProfiles = () => {
+  useEffect(() => {
+    fetchProfiles(selectedYear);
+  }, [selectedYear, limit]); // เรียก fetchProfiles() ทุกครั้งที่เปลี่ยนปี
+
+  const fetchProfiles = (year) => {
     const token = localStorage.getItem("token");
 
+    setLoading(false);
     axios
       .get("http://localhost:3000/api/profiles", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        setProfiles(response.data);
+        // กรองโปรไฟล์โดยการเลือกที่ user_id ที่ขึ้นต้นตามปีการศึกษาที่เลือก
+        const yearPrefix = year.slice(-2); // เอาหมายเลข 2 ตัวสุดท้ายของปีการศึกษามาเป็น prefix
+        const filteredProfiles = response.data
+          .filter((profile) => profile.user_id.startsWith(yearPrefix)) // ใช้ prefix เพื่อกรอง user_id
+          .slice(0, limit * 3);
+
+        setProfiles(filteredProfiles);
         setLoading(true);
       })
       .catch((error) => {
@@ -23,9 +37,26 @@ export default function Dashboard() {
       });
   };
 
-  useEffect(() => {
-    fetchProfiles();
-  }, []);
+  // คำนวณข้อมูลที่จะแสดงตามหน้า
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  // ฟังก์ชันสำหรับการเปลี่ยนหน้า
+  const handleNext = () => {
+    if (startIndex + limit < profiles.length) {
+      setCurrentPage(currentPage + 1);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentPage > 1) {
+      setCurrentPage(currentPage - 1);
+    }
+  };
+
+  const startIndex = (currentPage - 1) * limit;
+  const displayedProfiles = profiles.slice(startIndex, startIndex + limit);
 
   return (
     <div className="w-full xl:h-[calc(100dvh-65px)] md:h-dvh bg-[#d9d9d9]">
@@ -57,10 +88,14 @@ export default function Dashboard() {
             {/* Year */}
             <div className="flex items-center gap-[7px] w-full mt-[31px] px-[30px] md:px-[69px]">
               <p>ปีการศึกษา</p>
-              <select className="select select-bordered select-sm w-auto h-[33px] rounded-full">
+              <select
+                className="select select-bordered select-sm w-auto h-[33px] rounded-full"
+                value={selectedYear}
+                onChange={(e) => setSelectedYear(e.target.value)} // อัพเดทปีการศึกษาที่เลือก
+              >
+                <option>2565</option>
+                <option>2566</option>
                 <option>2567</option>
-                <option>2568</option>
-                <option>2569</option>
               </select>
             </div>
             {/* Entries per page */}
@@ -68,10 +103,13 @@ export default function Dashboard() {
               <div className="md:flex">
                 <div className="flex items-center">
                   <p>แสดง</p>
-                  <select className="select select-bordered select-sm w-auto h-[33px] mx-[12px] rounded-full">
-                    <option>10</option>
-                    <option>20</option>
-                    <option>30</option>
+                  <select
+                    className="select select-bordered select-sm w-auto h-[33px] mx-[12px] rounded-full"
+                    value={limit}
+                    onChange={(e) => setLimit(Number(e.target.value))} // อัพเดทค่าจำนวนรายการ
+                  >
+                    <option value={10}>10</option>
+                    <option value={20}>20</option>
                   </select>
                   <p>รายการ</p>
                 </div>
@@ -97,7 +135,6 @@ export default function Dashboard() {
                   </svg>
                 </div>
               </div>
-              {/* Container */}
               <div
                 className="overflow-x-auto"
                 style={{
@@ -135,62 +172,72 @@ export default function Dashboard() {
                   {/* Body Table */}
                   <tbody className="bg-white/[0.87]">
                     {loading ? (
-                      profiles.map((profile) => (
-                        <tr key={profile.user_id}>
-                          <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {profile.user_id}
-                          </td>
-                          <td className="px-4 py-2 font-light whitespace-nowrap ">
-                            {profile.firstname}
-                          </td>
-                          <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {profile.lastname}
-                          </td>
-                          <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {profile.nickname}
-                          </td>
-                          <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {new Date(profile.birthday).toLocaleDateString(
-                              "th-TH",
-                              {
-                                day: "numeric",
-                                month: "long",
-                                year: "numeric",
-                              }
-                            )}
-                          </td>
-                          <td className="px-4 py-2 font-light whitespace-nowrap">
-                            {profile.tel}
-                          </td>
-                          <td className="px-4 py-2 font-light break-words">
-                            {profile.email}
-                          </td>
-                          {/* Detail Button */}
-                          <td className="px-4 py-2">
-                            <Link
-                              to={`/profile/${profile.user_id}`}
-                              className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]"
-                            >
-                              <svg
-                                width={18}
-                                height={16}
-                                viewBox="0 0 18 16"
-                                fill="none"
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="w-[17px] h-4"
+                      profiles.length > 0 ? (
+                        displayedProfiles.map((profile, index) => (
+                          <tr key={index}>
+                            <td className="px-4 py-2 font-light whitespace-nowrap">
+                              {profile.user_id}
+                            </td>
+                            <td className="px-4 py-2 font-light whitespace-nowrap ">
+                              {profile.firstname}
+                            </td>
+                            <td className="px-4 py-2 font-light whitespace-nowrap">
+                              {profile.lastname}
+                            </td>
+                            <td className="px-4 py-2 font-light whitespace-nowrap">
+                              {profile.nickname}
+                            </td>
+                            <td className="px-4 py-2 font-light whitespace-nowrap">
+                              {new Date(profile.birthday).toLocaleDateString(
+                                "th-TH",
+                                {
+                                  day: "numeric",
+                                  month: "long",
+                                  year: "numeric",
+                                }
+                              )}
+                            </td>
+                            <td className="px-4 py-2 font-light whitespace-nowrap">
+                              {profile.tel}
+                            </td>
+                            <td className="px-4 py-2 font-light break-words">
+                              {profile.email}
+                            </td>
+                            <td className="px-4 py-2">
+                              <Link
+                                to={`/profile/${profile.user_id}`}
+                                className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]"
                               >
-                                <g clipPath="url(#clip0_2077_116)">
-                                  <path
-                                    d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
-                                    fill="white"
-                                  />
-                                </g>
-                              </svg>
-                              <p className="text-white font-bold">ดูข้อมูล</p>
-                            </Link>
+                                <svg
+                                  width={18}
+                                  height={16}
+                                  viewBox="0 0 18 16"
+                                  fill="none"
+                                  xmlns="http://www.w3.org/2000/svg"
+                                  className="w-[17px] h-4"
+                                >
+                                  <g clipPath="url(#clip0_2077_116)">
+                                    <path
+                                      d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
+                                      fill="white"
+                                    />
+                                  </g>
+                                </svg>
+                                <p className="text-white font-bold">ดูข้อมูล</p>
+                              </Link>
+                            </td>
+                          </tr>
+                        ))
+                      ) : (
+                        <tr>
+                          <td
+                            className="px-4 py-2 font-light text-center"
+                            colSpan={8}
+                          >
+                            ไม่มีข้อมูล
                           </td>
                         </tr>
-                      ))
+                      )
                     ) : (
                       <tr>
                         <td
@@ -205,25 +252,47 @@ export default function Dashboard() {
                 </table>
               </div>
             </div>
-            {/* Pagination */}
+            {/* Pagiantion */}
             <div className="flex items-center justify-center gap-[12px] mt-[36px] mb-[67.96px]">
-              <p className="text-[#9e9e9e] text-base">Previous</p>
-              <div className="px-[9px] py-2 rounded-lg bg-[#9e9e9e]">
-                <p className="flex items-center justify-center w-[13px] h-[15px] text-white text-sm">
+              <button
+                className="text-[#9e9e9e] text-base"
+                onClick={handlePrevious}
+              >
+                Previous
+              </button>
+              <div
+                onClick={() => handlePageChange(1)}
+                className={`px-[9px] py-2 rounded-lg ${
+                  currentPage === 1 ? "bg-[#9e9e9e]" : "bg-[#e0e0e0]"
+                }`}
+              >
+                <button className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
                   1
-                </p>
+                </button>
               </div>
-              <div className="px-[9px] py-2 rounded-lg bg-[#e0e0e0]">
-                <p className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
+              <div
+                onClick={() => handlePageChange(2)}
+                className={`px-[9px] py-2 rounded-lg ${
+                  currentPage === 2 ? "bg-[#9e9e9e]" : "bg-[#e0e0e0]"
+                }`}
+              >
+                <button className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
                   2
-                </p>
+                </button>
               </div>
-              <div className="px-[9px] py-2 rounded-lg bg-[#e0e0e0]">
-                <p className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
+              <div
+                onClick={() => handlePageChange(3)}
+                className={`px-[9px] py-2 rounded-lg ${
+                  currentPage === 3 ? "bg-[#9e9e9e]" : "bg-[#e0e0e0]"
+                }`}
+              >
+                <button className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
                   3
-                </p>
+                </button>
               </div>
-              <p className="text-[#9e9e9e] text-base">Next</p>
+              <button className="text-[#9e9e9e] text-base" onClick={handleNext}>
+                Next
+              </button>
             </div>
           </div>
         </div>

@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
-import edit_user from "../assets/edit_user.png";
 import axios from "axios";
 import { Link } from "react-router-dom";
 import default_profile from "../assets/default_profile.png";
 
 export default function Profile() {
   const [profile, setProfile] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchProfile = () => {
     const token = localStorage.getItem("token");
@@ -16,9 +16,11 @@ export default function Profile() {
       })
       .then((response) => {
         setProfile(response.data);
+        setLoading(true);
       })
       .catch((error) => {
         console.log("Error fetching users:", error);
+        setLoading(true);
       });
   };
 
@@ -50,183 +52,193 @@ export default function Profile() {
                 ข้อมูลนักศึกษา
               </p>
             </div>
-            {/* Image */}
+            {/* Profile Image */}
             <div className="flex space-x-[-39px] mt-[36px]">
               <img
                 src={
                   profile.image
-                    ? `http://localhost:3000/uploads/${profile.image}`
+                    ? `http://localhost:3000/${profile.image}`
                     : default_profile
                 }
                 className="h-[151px] w-[151px] rounded-full border border-gray-300"
               />
             </div>
-            <div className="flex space-x-[-39px]">
-              {/* Header */}
-              <p className="mt-[15px] text-[#9e1f1f] text-[24px] md:text-[28px] font-bold">
-                {profile.title}
-                {profile.firstname} {profile.lastname}
-              </p>
-            </div>
-            <div className="md:grid md:grid-cols-2 md:gap-y-[15px] lg:gap-x-[200px] mx-auto mt-[36px]">
-              <div className="md:mt-0 text-gray-800 text-base font-semibold">
-                รหัสนักศึกษา
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.user_id}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
-                ชื่อ-นามสกุล
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.title}
-                {profile.firstname} {profile.lastname}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
-                ชื่อเล่น
-              </div>
-              <div className=" text-gray-600 font-medium text-base">
-                {profile.nickname}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                วัน/เดือน/ปีเกิด
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {new Date(profile.birthday).toLocaleDateString("th-TH", {
-                  day: "numeric",
-                  month: "long",
-                  year: "numeric",
-                })}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                รุ่น
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.generation}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                Github
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.github}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                สถานะ
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.status}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                โรงเรียนเดิม
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.original_school}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                เกรดเฉลี่ย
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.gpax}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                ที่อยู่
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.address}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                เบอร์โทรศัพท์
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.tel}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                Email
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.email}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                Facebook
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.facebook}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                เบอร์ติดต่อฉุกเฉิน
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.emergency_tel}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                ความสัมพันธ์กับนักศึกษา
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.relationship}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                โรคประจำตัว
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.congenital_disease}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                สิ่งที่แพ้
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.allergic_thing}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                สิทธิการรักษาพยาบาล
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.health_coverage}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
-                โรงพยาบาลที่ใช้สิทธิการรักษา
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.health_coverage_place}
-              </div>
-              <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
-                ข้อมูลการเกณฑ์ทหาร
-              </div>
-              <div className="text-gray-600 font-medium text-base">
-                {profile.military_status}
-              </div>
-            </div>
-            <div className="mt-[36px] mb-[56.96px]">
-              <Link
-                to={`/profile/edit/${profile.user_id}`}
-                className="btn btn-warning gap-[5px] w-full p-2.5 rounded-full"
-              >
-                <svg
-                  width={24}
-                  height={25}
-                  viewBox="0 0 24 25"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="w-6 h-6"
-                  preserveAspectRatio="xMidYMid meet"
-                >
-                  <path
-                    d="M12 3.03833H5C4.46957 3.03833 3.96086 3.24904 3.58579 3.62412C3.21071 3.99919 3 4.5079 3 5.03833V19.0383C3 19.5688 3.21071 20.0775 3.58579 20.4525C3.96086 20.8276 4.46957 21.0383 5 21.0383H19C19.5304 21.0383 20.0391 20.8276 20.4142 20.4525C20.7893 20.0775 21 19.5688 21 19.0383V12.0383"
-                    stroke="white"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                  <path
-                    d="M18.3751 2.66331C18.7729 2.26549 19.3125 2.04199 19.8751 2.04199C20.4377 2.04199 20.9773 2.26549 21.3751 2.66331C21.7729 3.06114 21.9964 3.6007 21.9964 4.16331C21.9964 4.72592 21.7729 5.26549 21.3751 5.66331L12.3621 14.6773C12.1246 14.9146 11.8313 15.0882 11.5091 15.1823L8.63609 16.0223C8.55005 16.0474 8.45883 16.0489 8.372 16.0267C8.28517 16.0044 8.20592 15.9592 8.14254 15.8959C8.07916 15.8325 8.03398 15.7532 8.01174 15.6664C7.98949 15.5796 7.991 15.4884 8.01609 15.4023L8.85609 12.5293C8.95062 12.2074 9.12463 11.9144 9.36209 11.6773L18.3751 2.66331Z"
-                    stroke="white"
-                    strokeWidth={2}
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-                <p className="text-white font-semibold text-xl">แก้ไขข้อมูล</p>
-              </Link>
-            </div>
+            {loading ? (
+              profile && (
+                <div>
+                  <div className="flex justify-center space-x-[-39px]">
+                    {/* Header */}
+                    <p className="mt-[15px] text-[#9e1f1f] text-[24px] md:text-[28px] font-bold">
+                      {profile.title}
+                      {profile.firstname} {profile.lastname}
+                    </p>
+                  </div>
+                  <div className="md:grid md:grid-cols-2 md:gap-y-[15px] lg:gap-x-[200px] mx-auto mt-[36px]">
+                    <div className="md:mt-0 text-gray-800 text-base font-semibold">
+                      รหัสนักศึกษา
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.user_id}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
+                      ชื่อ-นามสกุล
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.title}
+                      {profile.firstname} {profile.lastname}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
+                      ชื่อเล่น
+                    </div>
+                    <div className=" text-gray-600 font-medium text-base">
+                      {profile.nickname}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      วัน/เดือน/ปีเกิด
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {new Date(profile.birthday).toLocaleDateString("en-CA", {
+                        year: "numeric",
+                        month: "2-digit",
+                        day: "2-digit",
+                      })}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      รุ่น
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.generation}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      Github
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.github}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      สถานะ
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.status}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      โรงเรียนเดิม
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.original_school}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      เกรดเฉลี่ย
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.gpax}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      ที่อยู่
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.address}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      เบอร์โทรศัพท์
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.tel}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      Email
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.email}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      Facebook
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.facebook}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      เบอร์ติดต่อฉุกเฉิน
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.emergency_tel}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      ความสัมพันธ์กับนักศึกษา
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.relationship}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      โรคประจำตัว
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.congenital_disease}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      สิ่งที่แพ้
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.allergic_thing}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      สิทธิการรักษาพยาบาล
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.health_coverage}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold ">
+                      โรงพยาบาลที่ใช้สิทธิการรักษา
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.health_coverage_place}
+                    </div>
+                    <div className="mt-[13px] md:mt-0 text-gray-800 text-base font-semibold">
+                      ข้อมูลการเกณฑ์ทหาร
+                    </div>
+                    <div className="text-gray-600 font-medium text-base">
+                      {profile.military_status}
+                    </div>
+                  </div>
+                  <div className="flex justify-center mt-[36px] mb-[56.96px]">
+                    <Link
+                      to={`/profile/edit/${profile.user_id}`}
+                      className="flex flex-col justify-center btn btn-warning gap-[5px] w-[142px] p-2.5 rounded-full"
+                    >
+                      <svg
+                        width={24}
+                        height={25}
+                        viewBox="0 0 24 25"
+                        fill="none"
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="w-6 h-6"
+                        preserveAspectRatio="xMidYMid meet"
+                      >
+                        <path
+                          d="M12 3.03833H5C4.46957 3.03833 3.96086 3.24904 3.58579 3.62412C3.21071 3.99919 3 4.5079 3 5.03833V19.0383C3 19.5688 3.21071 20.0775 3.58579 20.4525C3.96086 20.8276 4.46957 21.0383 5 21.0383H19C19.5304 21.0383 20.0391 20.8276 20.4142 20.4525C20.7893 20.0775 21 19.5688 21 19.0383V12.0383"
+                          stroke="white"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                        <path
+                          d="M18.3751 2.66331C18.7729 2.26549 19.3125 2.04199 19.8751 2.04199C20.4377 2.04199 20.9773 2.26549 21.3751 2.66331C21.7729 3.06114 21.9964 3.6007 21.9964 4.16331C21.9964 4.72592 21.7729 5.26549 21.3751 5.66331L12.3621 14.6773C12.1246 14.9146 11.8313 15.0882 11.5091 15.1823L8.63609 16.0223C8.55005 16.0474 8.45883 16.0489 8.372 16.0267C8.28517 16.0044 8.20592 15.9592 8.14254 15.8959C8.07916 15.8325 8.03398 15.7532 8.01174 15.6664C7.98949 15.5796 7.991 15.4884 8.01609 15.4023L8.85609 12.5293C8.95062 12.2074 9.12463 11.9144 9.36209 11.6773L18.3751 2.66331Z"
+                          stroke="white"
+                          strokeWidth={2}
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                      <p className="text-white font-semibold text-xl">
+                        แก้ไขข้อมูล
+                      </p>
+                    </Link>
+                  </div>
+                </div>
+              )
+            ) : (
+              <div className="h-[580px] mt-[100px]">Loading...</div>
+            )}
           </div>
         </div>
       </div>

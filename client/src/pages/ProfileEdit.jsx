@@ -1,7 +1,7 @@
 import axios from "axios";
 import default_profile from "../assets/default_profile.png";
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function EditProfile() {
@@ -32,7 +32,6 @@ export default function EditProfile() {
     health_coverage_place: "",
     military_status: "",
   });
-  const [loading, setLoading] = useState(false);
   const [previewImage, setPreviewImage] = useState(null);
   const [selectedFile, setSelectedFile] = useState(null);
 
@@ -47,17 +46,15 @@ export default function EditProfile() {
         const updatedProfile = {
           ...response.data,
           image: response.data.image
-            ? `http://localhost:3000/uploads/${response.data.image}`
+            ? `http://localhost:3000/${response.data.image}`
             : "",
         };
 
         setProfile(updatedProfile);
         setPreviewImage(updatedProfile.image);
-        setLoading(true);
       })
       .catch((error) => {
         console.log("Error fetching users:", error);
-        setLoading(true);
       });
   };
 
@@ -89,6 +86,8 @@ export default function EditProfile() {
 
     if (selectedFile) {
       formData.append("image", selectedFile);
+    } else {
+      formData.append("image", profile.image);
     }
 
     const token = localStorage.getItem("token");
@@ -106,6 +105,7 @@ export default function EditProfile() {
         title: "อัพเดตโปรไฟล์สำเร็จ!",
       }).then(() => {
         navigate("/profile");
+        window.location.reload();
       });
     } catch (error) {
       console.error("Error updating profile:", error);
@@ -147,7 +147,7 @@ export default function EditProfile() {
                 แก้ไขข้อมูลนักศึกษา
               </p>
             </div>
-            {/* Image */}
+            {/* Profile Image */}
             <div className="flex justify-center items-end space-x-[-39px] mt-[36px]">
               <img
                 src={previewImage || profile.image || default_profile}
@@ -245,9 +245,13 @@ export default function EditProfile() {
                   วัน/เดือน/ปีเกิด
                 </div>
                 <input
-                  type="text"
+                  type="date"
                   name="birthday"
-                  value={profile.birthday || ""}
+                  value={
+                    profile.birthday
+                      ? new Date(profile.birthday).toLocaleDateString("en-CA")
+                      : ""
+                  }
                   onChange={handleChange}
                   className="input input-bordered w-full h-[33px] mt-[11px] rounded-full"
                 />
@@ -479,7 +483,7 @@ export default function EditProfile() {
                 <p className="text-white font-semibold text-xl">บันทึก</p>
               </button>
               {/* Cancel Button */}
-              <button className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full">
+              <Link to="/profile" className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full">
                 <svg
                   width={25}
                   height={25}
@@ -495,7 +499,7 @@ export default function EditProfile() {
                   />
                 </svg>
                 <p className="text-white font-semibold text-xl">ยกเลิก</p>
-              </button>
+              </Link>
             </div>
           </form>
         </div>
