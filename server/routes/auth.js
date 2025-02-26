@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { db } = require("../configs/db");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const SECRET_KEY = "my-key-se-project";
 
@@ -22,8 +23,8 @@ router.post("/login", (req, res) => {
     }
 
     const user = results[0];
-    
-    if (password !== user.password) {
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    if (!passwordMatch) {
       return res.status(401).json({ error: "Invalid credentials" });
     }
 

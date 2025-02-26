@@ -1,12 +1,12 @@
 import { Link, useNavigate } from "react-router-dom";
 import se_logo from "../assets/se_logo.png";
-import { links } from "../utils/links";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import default_profile from "../assets/default_profile.png";
 
 export default function Navbar() {
   const [profile, setProfile] = useState([]);
+  const [roleAdmin, setRoleAdmin] = useState([]);
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -29,8 +29,24 @@ export default function Navbar() {
       });
   };
 
+  const fetchProfileAdmin = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .get("http://localhost:3000/api/admin/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setRoleAdmin(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching users:", error);
+      });
+  };
+
   useEffect(() => {
     fetchProfile();
+    fetchProfileAdmin();
   }, []);
 
   return (
@@ -82,11 +98,11 @@ export default function Navbar() {
             tabIndex={0}
             className="dropdown-content menu w-52 p-2 z-[1] rounded-box bg-base-100 shadow"
           >
-            {links.map((link, index) => (
-              <li key={index}>
-                <Link to={link.href}>{link.label}</Link>
+            {roleAdmin.role === "student" ? (
+              <li>
+                <Link to="/profile">ข้อมูลนักศึกษา</Link>
               </li>
-            ))}
+            ) : null}
             <li>
               <button onClick={handleLogout}>ออกจากระบบ</button>
             </li>

@@ -7,25 +7,20 @@ export default function Dashboard() {
   const [loading, setLoading] = useState(false);
   const [selectedYear, setSelectedYear] = useState("2565");
   const [limit, setLimit] = useState(10);
-  const [currentPage, setCurrentPage] = useState(1); // สถานะของหน้าปัจจุบัน
-
-  useEffect(() => {
-    fetchProfiles(selectedYear);
-  }, [selectedYear, limit]); // เรียก fetchProfiles() ทุกครั้งที่เปลี่ยนปี
+  const [roleAdmin, setRoleAdmin] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const fetchProfiles = (year) => {
     const token = localStorage.getItem("token");
 
-    setLoading(false);
     axios
       .get("http://localhost:3000/api/profiles", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
-        // กรองโปรไฟล์โดยการเลือกที่ user_id ที่ขึ้นต้นตามปีการศึกษาที่เลือก
-        const yearPrefix = year.slice(-2); // เอาหมายเลข 2 ตัวสุดท้ายของปีการศึกษามาเป็น prefix
+        const yearPrefix = year.slice(-2);
         const filteredProfiles = response.data
-          .filter((profile) => profile.user_id.startsWith(yearPrefix)) // ใช้ prefix เพื่อกรอง user_id
+          .filter((profile) => profile.user_id.startsWith(yearPrefix))
           .slice(0, limit * 3);
 
         setProfiles(filteredProfiles);
@@ -37,12 +32,30 @@ export default function Dashboard() {
       });
   };
 
-  // คำนวณข้อมูลที่จะแสดงตามหน้า
+  const fetchProfileAdmin = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .get("http://localhost:3000/api/admin/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setRoleAdmin(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching users:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchProfiles(selectedYear);
+    fetchProfileAdmin();
+  }, [selectedYear, limit]);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  // ฟังก์ชันสำหรับการเปลี่ยนหน้า
   const handleNext = () => {
     if (startIndex + limit < profiles.length) {
       setCurrentPage(currentPage + 1);
@@ -58,14 +71,34 @@ export default function Dashboard() {
   const startIndex = (currentPage - 1) * limit;
   const displayedProfiles = profiles.slice(startIndex, startIndex + limit);
 
+  const handleDelete = (user_id) => {
+    if (window.confirm("Are you sure you want to delete this profile?")) {
+      const token = localStorage.getItem("token");
+      axios
+        .delete(`http://localhost:3000/api/profiles/${user_id}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        })
+        .then(() => {
+          alert("Profile deleted successfully!");
+          setProfiles(
+            profiles.filter((profile) => profile.user_id !== user_id)
+          );
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.error("Error deleting profile:", error);
+        });
+    }
+  };
+
   return (
-    <div className="w-full xl:h-[calc(100dvh-65px)] md:h-dvh bg-[#d9d9d9]">
+    <div className="w-full 2xl:h-screen bg-[#d9d9d9]">
       <div className="flex px-[16px] md:px-[96px]">
         <div
           className="flex justify-center h-full w-full mb-[67px] mt-[48px] rounded-[20px] bg-white"
           style={{ boxShadow: "5px 5px 100px 4px rgba(0,0,0,0.25)" }}
         >
-          <div className="flex flex-col items-center w-full">
+          <div className="flex flex-col xl:justify-center items-center w-full">
             <div className="flex items-center w-full h-[42px] px-[33px] py-[7px] rounded-tl-[20px] rounded-tr-[20px] bg-[#a01f1f]">
               <svg
                 width={28}
@@ -91,7 +124,7 @@ export default function Dashboard() {
               <select
                 className="select select-bordered select-sm w-auto h-[33px] rounded-full"
                 value={selectedYear}
-                onChange={(e) => setSelectedYear(e.target.value)} // อัพเดทปีการศึกษาที่เลือก
+                onChange={(e) => setSelectedYear(e.target.value)}
               >
                 <option>2565</option>
                 <option>2566</option>
@@ -106,7 +139,7 @@ export default function Dashboard() {
                   <select
                     className="select select-bordered select-sm w-auto h-[33px] mx-[12px] rounded-full"
                     value={limit}
-                    onChange={(e) => setLimit(Number(e.target.value))} // อัพเดทค่าจำนวนรายการ
+                    onChange={(e) => setLimit(Number(e.target.value))}
                   >
                     <option value={10}>10</option>
                     <option value={20}>20</option>
@@ -134,6 +167,29 @@ export default function Dashboard() {
                     />
                   </svg>
                 </div>
+                {roleAdmin.role === "teacher" ? (
+                  <Link
+                    to="/AddProfile"
+                    className="flex items-center justify-center w-[100px] h-[35px] gap-[4px] mt-5 md:mt-0 md:ml-10 rounded-lg bg-success"
+                  >
+                    <svg
+                      width={18}
+                      height={16}
+                      viewBox="0 0 18 16"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="w-[17px] h-4"
+                    >
+                      <g clipPath="url(#clip0_2077_116)">
+                        <path
+                          d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
+                          fill="white"
+                        />
+                      </g>
+                    </svg>
+                    <p className="text-white font-bold">เพิ่มข้อมูล</p>
+                  </Link>
+                ) : null}
               </div>
               <div
                 className="overflow-x-auto"
@@ -142,7 +198,7 @@ export default function Dashboard() {
                 }}
               >
                 {/* Table */}
-                <table className="table-fixed overflow-hidden xl:w-full mt-[36px] border-separate border-spacing-0 rounded-[20px] bg-[#d9d9d9]">
+                <table className="table-auto overflow-hidden xl:w-full mt-[36px] mx-auto border-separate border-spacing-0 rounded-[20px] bg-[#d9d9d9]">
                   <thead className="bg-[#d9d9d9]">
                     <tr>
                       <th className="whitespace-nowrap px-4 py-2 text-left">
@@ -203,28 +259,59 @@ export default function Dashboard() {
                             <td className="px-4 py-2 font-light break-words">
                               {profile.email}
                             </td>
-                            <td className="px-4 py-2">
-                              <Link
-                                to={`/profile/${profile.user_id}`}
-                                className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]"
-                              >
-                                <svg
-                                  width={18}
-                                  height={16}
-                                  viewBox="0 0 18 16"
-                                  fill="none"
-                                  xmlns="http://www.w3.org/2000/svg"
-                                  className="w-[17px] h-4"
+                            <td className="flex gap-2 px-4 py-2">
+                              <div className="flex">
+                                <Link
+                                  to={`/profile/${profile.user_id}`}
+                                  className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-[#9f2020]"
                                 >
-                                  <g clipPath="url(#clip0_2077_116)">
-                                    <path
-                                      d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
-                                      fill="white"
-                                    />
-                                  </g>
-                                </svg>
-                                <p className="text-white font-bold">ดูข้อมูล</p>
-                              </Link>
+                                  <svg
+                                    width={18}
+                                    height={16}
+                                    viewBox="0 0 18 16"
+                                    fill="none"
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    className="w-[17px] h-4"
+                                  >
+                                    <g clipPath="url(#clip0_2077_116)">
+                                      <path
+                                        d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
+                                        fill="white"
+                                      />
+                                    </g>
+                                  </svg>
+                                  <p className="text-white font-bold">
+                                    ดูข้อมูล
+                                  </p>
+                                </Link>
+                              </div>
+                              {roleAdmin.role === "teacher" ? (
+                                <div className="flex gap-2">
+                                  <button
+                                    onClick={() =>
+                                      handleDelete(profile.user_id)
+                                    }
+                                    className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-error"
+                                  >
+                                    <svg
+                                      width={18}
+                                      height={16}
+                                      viewBox="0 0 18 16"
+                                      fill="none"
+                                      xmlns="http://www.w3.org/2000/svg"
+                                      className="w-[17px] h-4"
+                                    >
+                                      <g clipPath="url(#clip0_2077_116)">
+                                        <path
+                                          d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
+                                          fill="white"
+                                        />
+                                      </g>
+                                    </svg>
+                                    <p className="text-white font-bold">ลบ</p>
+                                  </button>
+                                </div>
+                              ) : null}
                             </td>
                           </tr>
                         ))
@@ -278,16 +365,6 @@ export default function Dashboard() {
               >
                 <button className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
                   2
-                </button>
-              </div>
-              <div
-                onClick={() => handlePageChange(3)}
-                className={`px-[9px] py-2 rounded-lg ${
-                  currentPage === 3 ? "bg-[#9e9e9e]" : "bg-[#e0e0e0]"
-                }`}
-              >
-                <button className="flex items-center justify-center w-[13px] h-[15px] text-black text-sm">
-                  3
                 </button>
               </div>
               <button className="text-[#9e9e9e] text-base" onClick={handleNext}>
