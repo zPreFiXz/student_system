@@ -124,7 +124,7 @@ export default function Dashboard() {
   };
 
   return (
-    <div className="w-full 2xl:h-screen bg-[#d9d9d9]">
+    <div className={`w-full h-[1400px] 2xl:h-screen bg-[#d9d9d9]`}>
       <div className="flex px-[16px] md:px-[96px]">
         <div
           className="flex justify-center h-full w-full mb-[67px] mt-[48px] rounded-[20px] bg-white"

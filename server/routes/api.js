@@ -297,40 +297,18 @@ router.put("/profiles/:id", upload.single("image"), (req, res) => {
 
 // ลบข้อมูล Profile
 router.delete("/profiles/:id", (req, res) => {
-  const { id } = req.params;
+  const { id } = req.params
 
-  const sqlDeleteUser = "DELETE FROM users WHERE user_id = ?";
-  const sqlDeleteAccount = "DELETE FROM accounts WHERE username = ?";
-
-  const deleteUser = new Promise((resolve, reject) => {
-    db.query(sqlDeleteUser, [id], (err, result) => {
-      if (err) return reject(err);
-      if (result.affectedRows === 0)
-        return reject({ status: 404, message: "User not found" });
-      resolve();
-    });
+  const sql = "DELETE FROM users WHERE user_id = ?";
+  db.query(sql, [id], (err, result) => {
+    if (err) {
+      return res.status(500).json({ error: err.message });
+    }
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Profile not found" });
+    }
+    res.json({ message: "Profile deleted successfully" });
   });
-
-  const deleteAccount = new Promise((resolve, reject) => {
-    db.query(sqlDeleteAccount, [id], (err, result) => {
-      if (err) return reject(err);
-      if (result.affectedRows === 0)
-        return reject({ status: 404, message: "Account not found" });
-      resolve();
-    });
-  });
-
-  Promise.all([deleteUser, deleteAccount])
-    .then(() =>
-      res.json({ message: "Profile and account deleted successfully" })
-    )
-    .catch((error) => {
-      if (error.status) {
-        res.status(error.status).json({ error: error.message });
-      } else {
-        res.status(500).json({ error: error.message });
-      }
-    });
 });
 
 module.exports = router;

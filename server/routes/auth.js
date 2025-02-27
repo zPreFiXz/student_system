@@ -3,8 +3,9 @@ const router = express.Router();
 const { db } = require("../configs/db");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
+require("dotenv").config();
 
-const SECRET_KEY = "my-key-se-project";
+const SECRET_KEY = process.env.SECRET_KEY;
 
 // Login
 router.post("/login", (req, res) => {
@@ -29,7 +30,7 @@ router.post("/login", (req, res) => {
     }
 
     const token = jwt.sign(
-      { id: user.id, username: user.username },
+      { id: user.id, username: user.username, role: user.role },
       SECRET_KEY,
       {
         expiresIn: "1h",

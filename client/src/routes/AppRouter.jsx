@@ -7,7 +7,7 @@ import Login from "../pages/auth/Login";
 import Layouts from "../layouts/Layouts";
 import ProtectedRoute from "./ProtectRoute";
 import PublicRoute from "./PublicRoute";
-import AddProfile from "../pages/AddProfile";
+import AddProfile from "../pages/admin/AddProfile";
 
 export default function AppRouter() {
   return (
@@ -25,9 +25,9 @@ export default function AppRouter() {
               <Route path="/" element={<Navigate to="dashboard" replace />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/AddProfile" element={<AddProfile />} />
               <Route path="/profile/:id" element={<ProfileView />} />
               <Route path="/profile/edit/:id" element={<ProfileEdit />} />
+              <Route path="/AddProfile" element={<AddProfile />} />
             </Route>
           </Route>
         </Routes>

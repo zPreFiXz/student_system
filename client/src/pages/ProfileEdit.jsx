@@ -450,11 +450,18 @@ export default function EditProfile() {
                   <option value="" disabled>
                     กรุณาเลือก
                   </option>
-                  <option value="ผ่านการเกณฑ์ทหาร">ผ่านการเกณฑ์ทหาร</option>
-                  <option value="ยังไม่ผ่านการเกณฑ์ทหาร">
-                    ยังไม่ผ่านการเกณฑ์ทหาร
+                  <option value="ได้รับการเกณฑ์ทหารแล้ว">
+                    ได้รับการเกณฑ์ทหารแล้ว
                   </option>
-                  <option value="เรียน รด.">เรียน รด.</option>
+                  <option value="ยังไม่ได้รับการเกณฑ์ทหาร">
+                    ยังไม่ได้รับการเกณฑ์ทหาร
+                  </option>
+                  <option value="ไม่ต้องเข้ารับการเกณฑ์ทหาร">
+                    ไม่ต้องเข้ารับการเกณฑ์ทหาร
+                  </option>
+                  <option value="สำเร็จการศึกษาวิชาทหาร (รด.)">
+                    สำเร็จการศึกษาวิชาทหาร (รด.)
+                  </option>
                 </select>
               </div>
             </div>
@@ -483,7 +490,10 @@ export default function EditProfile() {
                 <p className="text-white font-semibold text-xl">บันทึก</p>
               </button>
               {/* Cancel Button */}
-              <Link to="/profile" className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full">
+              <Link
+                to="/profile"
+                className="btn btn-error gap-[5px] w-[109px] p-2.5 rounded-full"
+              >
                 <svg
                   width={25}
                   height={25}

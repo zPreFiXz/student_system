@@ -7,6 +7,7 @@ export default function ViewProfile() {
   const { id } = useParams();
   const [profile, setProfile] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [roleAdmin, setRoleAdmin] = useState([]);
 
   const fetchProfile = () => {
     const token = localStorage.getItem("token");
@@ -25,8 +26,24 @@ export default function ViewProfile() {
       });
   };
 
+  const fetchProfileAdmin = () => {
+    const token = localStorage.getItem("token");
+
+    axios
+      .get("http://localhost:3000/api/admin/", {
+        headers: { Authorization: `Bearer ${token}` },
+      })
+      .then((response) => {
+        setRoleAdmin(response.data);
+      })
+      .catch((error) => {
+        console.log("Error fetching users:", error);
+      });
+  };
+
   useEffect(() => {
     fetchProfile();
+    fetchProfileAdmin();
   }, []);
 
   return (
@@ -141,6 +158,70 @@ export default function ViewProfile() {
                       {profile.facebook}
                     </div>
                   </div>
+                  {roleAdmin.role === "teacher" ? (
+                    <div className="md:grid md:grid-cols-2 lg:gap-x-[200px] mt-[13px] gap-[13px]">
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        Github
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.github}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        เกรดเฉลี่ยที่จบ
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.gpax}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        ที่อยู่
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.address}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        เบอร์ติดต่อฉุกเฉิน
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.emergency_tel}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        ความสัมพันธ์กับนักศึกษา
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.relationship}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        โรคประจำตัว
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.congenital_disease}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        สิ่งที่แพ้
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.allergic_thing}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        สิทธิการรักษาพยาบาล
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.health_coverage}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        โรงพยาบาลที่ใช้สิทธิการรักษา
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.health_coverage_place}
+                      </div>
+                      <div className="md:mt-0 text-gray-800 text-base font-semibold ">
+                        ข้อมูลการเกณฑ์ทหาร
+                      </div>
+                      <div className="text-gray-600 font-medium text-base">
+                        {profile.military_status}
+                      </div>
+                    </div>
+                  ) : null}
                 </div>
               )
             ) : (
