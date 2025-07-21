@@ -13,7 +13,7 @@ export default function ViewProfile() {
     const token = localStorage.getItem("token");
 
     axios
-      .get(`https://140.245.47.154/api/profiles/${id}`, {
+      .get(`http://140.245.47.154/api/profiles/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -30,7 +30,7 @@ export default function ViewProfile() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("https://140.245.47.154/api/admin/", {
+      .get("http://140.245.47.154/api/admin/", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -75,7 +75,7 @@ export default function ViewProfile() {
               <img
                 src={
                   profile.image
-                    ? `https://140.245.47.154/${profile.image}`
+                    ? `http://140.245.47.154/${profile.image}`
                     : default_profile
                 }
                 className="h-[151px] w-[151px] rounded-full border border-gray-300"

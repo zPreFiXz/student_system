@@ -41,7 +41,7 @@ export default function AddProfile() {
     const token = localStorage.getItem("token");
 
     axios
-      .post("https://140.245.47.154/api/profiles", profile, {
+      .post("http://140.245.47.154/api/profiles", profile, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then(() => {

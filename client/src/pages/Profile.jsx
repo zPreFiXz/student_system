@@ -11,7 +11,7 @@ export default function Profile() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("https://140.245.47.154/api/profile", {
+      .get("http://140.245.47.154/api/profile", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -57,7 +57,7 @@ export default function Profile() {
               <img
                 src={
                   profile.image
-                    ? `https://140.245.47.154/${profile.image}`
+                    ? `http://140.245.47.154/${profile.image}`
                     : default_profile
                 }
                 className="h-[151px] w-[151px] rounded-full border border-gray-300"

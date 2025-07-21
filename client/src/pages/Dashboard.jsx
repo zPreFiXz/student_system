@@ -16,7 +16,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("https://140.245.47.154/api/profiles", {
+      .get("http://140.245.47.154/api/profiles", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -38,7 +38,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("https://140.245.47.154/api/admin/", {
+      .get("http://140.245.47.154/api/admin/", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -101,7 +101,7 @@ export default function Dashboard() {
       if (result.isConfirmed) {
         const token = localStorage.getItem("token");
         axios
-          .delete(`https://140.245.47.154api/profiles/${user_id}`, {
+          .delete(`http://140.245.47.154api/profiles/${user_id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {
