@@ -39,14 +39,14 @@ export default function EditProfile() {
     const token = localStorage.getItem("token");
 
     axios
-      .get(`http://localhost:3000/api/profiles/${id}`, {
+      .get(`https://140.245.47.154/api/profiles/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
         const updatedProfile = {
           ...response.data,
           image: response.data.image
-            ? `http://localhost:3000/${response.data.image}`
+            ? `https://140.245.47.154/${response.data.image}`
             : "",
         };
 
@@ -93,7 +93,7 @@ export default function EditProfile() {
     const token = localStorage.getItem("token");
 
     try {
-      await axios.put(`http://localhost:3000/api/profiles/${id}`, formData, {
+      await axios.put(`https://140.245.47.154/api/profiles/${id}`, formData, {
         headers: {
           Authorization: `Bearer ${token}`,
           "Content-Type": "multipart/form-data",

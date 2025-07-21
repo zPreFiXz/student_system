@@ -16,7 +16,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:3000/api/profiles", {
+      .get("https://140.245.47.154/api/profiles", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -38,7 +38,7 @@ export default function Dashboard() {
     const token = localStorage.getItem("token");
 
     axios
-      .get("http://localhost:3000/api/admin/", {
+      .get("https://140.245.47.154/api/admin/", {
         headers: { Authorization: `Bearer ${token}` },
       })
       .then((response) => {
@@ -101,7 +101,7 @@ export default function Dashboard() {
       if (result.isConfirmed) {
         const token = localStorage.getItem("token");
         axios
-          .delete(`http://localhost:3000/api/profiles/${user_id}`, {
+          .delete(`https://140.245.47.154api/profiles/${user_id}`, {
             headers: { Authorization: `Bearer ${token}` },
           })
           .then(() => {
@@ -328,19 +328,20 @@ export default function Dashboard() {
                                     className="flex items-center justify-center gap-[4px] w-[89px] h-[35px] mx-auto rounded-lg bg-error"
                                   >
                                     <svg
-                                      width={18}
-                                      height={16}
-                                      viewBox="0 0 18 16"
-                                      fill="none"
                                       xmlns="http://www.w3.org/2000/svg"
-                                      className="w-[17px] h-4"
+                                      width="20"
+                                      height="20"
+                                      viewBox="0 0 24 24"
+                                      fill="none"
+                                      stroke="currentColor"
+                                      strokeWidth="2"
+                                      strokeLinecap="round"
+                                      strokeLinejoin="round"
+                                      className="lucide lucide-trash-icon lucide-trash text-white"
                                     >
-                                      <g clipPath="url(#clip0_2077_116)">
-                                        <path
-                                          d="M8.62504 6C8.06146 6 7.52095 6.21071 7.12244 6.58579C6.72392 6.96086 6.50004 7.46957 6.50004 8C6.50004 8.53043 6.72392 9.03914 7.12244 9.41421C7.52095 9.78929 8.06146 10 8.62504 10C9.18863 10 9.72913 9.78929 10.1276 9.41421C10.5262 9.03914 10.75 8.53043 10.75 8C10.75 7.46957 10.5262 6.96086 10.1276 6.58579C9.72913 6.21071 9.18863 6 8.62504 6ZM8.62504 11.3333C7.68573 11.3333 6.7849 10.9821 6.1207 10.357C5.45651 9.7319 5.08337 8.88406 5.08337 8C5.08337 7.11595 5.45651 6.2681 6.1207 5.64298C6.7849 5.01786 7.68573 4.66667 8.62504 4.66667C9.56435 4.66667 10.4652 5.01786 11.1294 5.64298C11.7936 6.2681 12.1667 7.11595 12.1667 8C12.1667 8.88406 11.7936 9.7319 11.1294 10.357C10.4652 10.9821 9.56435 11.3333 8.62504 11.3333ZM8.62504 3C5.08337 3 2.05879 5.07333 0.833374 8C2.05879 10.9267 5.08337 13 8.62504 13C12.1667 13 15.1913 10.9267 16.4167 8C15.1913 5.07333 12.1667 3 8.62504 3Z"
-                                          fill="white"
-                                        />
-                                      </g>
+                                      <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6" />
+                                      <path d="M3 6h18" />
+                                      <path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2" />
                                     </svg>
                                     <p className="text-white font-bold">ลบ</p>
                                   </button>
